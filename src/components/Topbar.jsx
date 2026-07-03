@@ -17,7 +17,7 @@ import { formatDistanceToNow } from 'date-fns';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
-  borderRadius: 8,
+  borderRadius: '50px',
   backgroundColor: '#FFFFFF',
   border: `1px solid #E8E2DD`,
   '&:hover': {
@@ -184,7 +184,7 @@ const Topbar = ({ handleDrawerToggle }) => {
               textTransform: 'none',
               fontWeight: 500,
               height: 40,
-              borderRadius: 2,
+              borderRadius: '50px',
               '&:hover': { borderColor: '#7A4E2D', bgcolor: '#FFFFFF' }
             }}
           >
@@ -208,14 +208,14 @@ const Topbar = ({ handleDrawerToggle }) => {
             startIcon={<AddIcon />}
             sx={{ 
               display: { xs: 'none', sm: 'flex' },
-              bgcolor: '#7A4E2D',
+              bgcolor: '#8C5A35',
               color: '#FFFFFF',
               height: 40,
-              borderRadius: 2,
+              borderRadius: '50px',
               textTransform: 'none',
               fontWeight: 500,
               boxShadow: 'none',
-              '&:hover': { bgcolor: '#3B2C20', boxShadow: 'none' }
+              '&:hover': { bgcolor: '#7A4E2D', boxShadow: 'none' }
             }}
           >
             New Booking
@@ -229,7 +229,7 @@ const Topbar = ({ handleDrawerToggle }) => {
             onClick={handleNotifClick}
             sx={{ color: '#6B6B6B' }}
           >
-            <Badge badgeContent={unreadCount} color="error" sx={{ '& .MuiBadge-badge': { bgcolor: '#DC2626' } }}>
+            <Badge badgeContent={unreadCount} sx={{ '& .MuiBadge-badge': { bgcolor: '#8C5A35', color: '#fff' } }}>
               <NotificationsNoneIcon />
             </Badge>
           </IconButton>
@@ -239,7 +239,7 @@ const Topbar = ({ handleDrawerToggle }) => {
             sx={{ display: 'flex', alignItems: 'center', gap: 1.5, cursor: 'pointer', ml: 1 }}
             onClick={handleProfileMenuOpen}
           >
-            <Avatar sx={{ width: 36, height: 36, bgcolor: '#3B2C20', fontSize: '1rem', fontWeight: 600 }}>
+            <Avatar sx={{ width: 36, height: 36, bgcolor: '#312318', fontSize: '1rem', fontWeight: 600 }}>
               {user?.name?.charAt(0) || 'Y'}
             </Avatar>
             <Box sx={{ display: { xs: 'none', lg: 'block' } }}>

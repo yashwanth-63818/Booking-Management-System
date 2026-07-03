@@ -10,6 +10,7 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import CleaningServicesIcon from '@mui/icons-material/CleaningServices';
 import BadgeIcon from '@mui/icons-material/Badge';
 import HeadsetMicIcon from '@mui/icons-material/HeadsetMic';
+import RoomServiceIcon from '@mui/icons-material/RoomService';
 import { useNavigate, useLocation } from 'react-router-dom';
 
 const drawerWidth = 260;
@@ -19,9 +20,10 @@ const menuItems = [
   { text: 'Bookings', icon: <EventAvailableIcon />, path: '/bookings' },
   { text: 'Rooms', icon: <HotelIcon />, path: '/rooms' },
   { text: 'Guests', icon: <PeopleIcon />, path: '/guests' },
+  { text: 'Reception', icon: <RoomServiceIcon />, path: '/reception' },
+  { text: 'Housekeeping', icon: <CleaningServicesIcon />, path: '/housekeeping' },
   { text: 'Billing', icon: <ReceiptIcon />, path: '/billing' },
   { text: 'Reports', icon: <AssessmentIcon />, path: '/reports' },
-  { text: 'Housekeeping', icon: <CleaningServicesIcon />, path: '/housekeeping' },
   { text: 'Staff', icon: <BadgeIcon />, path: '/staff' },
   { text: 'Settings', icon: <SettingsIcon />, path: '/settings' },
 ];
@@ -33,27 +35,35 @@ const Sidebar = ({ mobileOpen, handleDrawerToggle }) => {
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
   const drawer = (
-    <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%', bgcolor: '#3B2C20', color: '#fff' }}>
+    <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%', bgcolor: '#2A1F18', color: '#fff' }}>
       
       {/* Logo Section */}
       <Toolbar sx={{ justifyContent: 'flex-start', py: 3, px: 3 }}>
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
           <Box sx={{ 
-            width: 40, height: 40, 
-            border: '1px solid rgba(255,255,255,0.2)', 
+            width: 44, height: 44, 
+            border: '2px dashed #CFA365', 
+            borderRadius: '50%', 
             display: 'flex', justifyContent: 'center', alignItems: 'center', 
-            borderRadius: 1, 
-            color: '#A9744F', 
-            fontWeight: 400, 
-            fontSize: 24 
+            position: 'relative'
           }}>
-            K
+            <Box sx={{
+              width: 38, height: 38,
+              border: '1px solid #CFA365',
+              borderRadius: '50%',
+              display: 'flex', justifyContent: 'center', alignItems: 'center',
+              color: '#CFA365', 
+              fontWeight: 400, 
+              fontSize: 22 
+            }}>
+              K
+            </Box>
           </Box>
           <Box>
-            <Typography variant="h6" sx={{ fontWeight: 600, color: '#fff', fontSize: '1.1rem', letterSpacing: '0.05em', lineHeight: 1.2 }}>
+            <Typography variant="h6" sx={{ fontWeight: 600, color: '#fff', fontSize: '1.2rem', letterSpacing: '0.05em', lineHeight: 1.1 }}>
               KACH INN
             </Typography>
-            <Typography variant="caption" sx={{ color: 'rgba(255,255,255,0.6)', letterSpacing: '0.1em', fontSize: '0.65rem' }}>
+            <Typography variant="caption" sx={{ color: '#A0968F', letterSpacing: '0.1em', fontSize: '0.65rem' }}>
               MANAGEMENT
             </Typography>
           </Box>
@@ -72,36 +82,33 @@ const Sidebar = ({ mobileOpen, handleDrawerToggle }) => {
                   if (isMobile) handleDrawerToggle();
                 }}
                 sx={{
-                  borderRadius: 2,
+                  borderRadius: '50px',
                   py: 1.2,
                   px: 2,
-                  bgcolor: isActive ? '#7A4E2D' : 'transparent',
-                  color: '#fff',
+                  bgcolor: isActive ? '#8C5A35' : 'transparent',
+                  color: '#ffffff',
                   transition: 'all 0.2s ease',
                   '&:hover': {
-                    bgcolor: isActive ? '#7A4E2D' : 'rgba(122, 78, 45, 0.4)',
-                    color: '#fff',
+                    bgcolor: isActive ? '#8C5A35' : 'rgba(255, 255, 255, 0.05)',
                   },
                 }}
               >
-                <ListItemIcon sx={{ color: '#fff', minWidth: 40, opacity: 1 }}>
+                <ListItemIcon sx={{ color: 'inherit', minWidth: 40, opacity: 1 }}>
                   {item.icon}
                 </ListItemIcon>
                 <ListItemText 
-                  primary={item.text} 
-                  primaryTypographyProps={{ 
-                    fontWeight: isActive ? 600 : 400, 
-                    opacity: 1,
-                    color: '#ffffff',
-                    fontSize: '0.95rem'
-                  }} 
+                  disableTypography
+                  primary={
+                    <Typography style={{ color: '#ffffff', fontWeight: isActive ? 600 : 500, fontSize: '0.95rem' }}>
+                      {item.text}
+                    </Typography>
+                  } 
                 />
               </ListItemButton>
             </ListItem>
           );
         })}
       </List>
-
 
     </Box>
   );
