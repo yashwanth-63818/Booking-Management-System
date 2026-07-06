@@ -549,45 +549,45 @@ const Bookings = () => {
       {/* Booking List Table */}
       <Card>
         <TableContainer component={Paper} elevation={0}>
-          <Table sx={{ minWidth: 800 }}>
+          <Table size="small" sx={{ minWidth: 'auto' }}>
             <TableHead>
-              <TableRow sx={{ bgcolor: 'background.default', height: '56px' }}>
-                <TableCell sx={{ minWidth: 80, fontWeight: 700, color: 'text.secondary', letterSpacing: '0.05em', whiteSpace: 'nowrap', verticalAlign: 'middle', px: 2 }}>
+              <TableRow sx={{ bgcolor: 'background.default', height: '48px' }}>
+                <TableCell align="center" sx={{ fontWeight: 600, fontSize: '0.75rem', color: 'text.secondary', letterSpacing: '0.02em', whiteSpace: 'nowrap', verticalAlign: 'middle', px: 1.5 }}>
                   <TableSortLabel active={sortBy === 'id'} direction={sortBy === 'id' ? sortOrder : 'asc'} onClick={() => handleSort('id')}>
-                    ID
+                    Id
                   </TableSortLabel>
                 </TableCell>
-                <TableCell sx={{ minWidth: 160, fontWeight: 700, color: 'text.secondary', letterSpacing: '0.05em', whiteSpace: 'nowrap', verticalAlign: 'middle', px: 2 }}>
+                <TableCell align="center" sx={{ fontWeight: 600, fontSize: '0.75rem', color: 'text.secondary', letterSpacing: '0.02em', whiteSpace: 'nowrap', verticalAlign: 'middle', px: 1.5 }}>
                   <TableSortLabel active={sortBy === 'customer_name'} direction={sortBy === 'customer_name' ? sortOrder : 'asc'} onClick={() => handleSort('customer_name')}>
-                    CUSTOMER
+                    Customer
                   </TableSortLabel>
                 </TableCell>
-                <TableCell sx={{ minWidth: 120, fontWeight: 700, color: 'text.secondary', letterSpacing: '0.05em', whiteSpace: 'nowrap', verticalAlign: 'middle', px: 2 }}>
+                <TableCell align="center" sx={{ fontWeight: 600, fontSize: '0.75rem', color: 'text.secondary', letterSpacing: '0.02em', whiteSpace: 'nowrap', verticalAlign: 'middle', px: 1.5 }}>
                   <TableSortLabel active={sortBy === 'room_number'} direction={sortBy === 'room_number' ? sortOrder : 'asc'} onClick={() => handleSort('room_number')}>
-                    ROOM
+                    Room
                   </TableSortLabel>
                 </TableCell>
-                <TableCell sx={{ minWidth: 160, fontWeight: 700, color: 'text.secondary', letterSpacing: '0.05em', whiteSpace: 'nowrap', verticalAlign: 'middle', px: 2 }}>
+                <TableCell align="center" sx={{ fontWeight: 600, fontSize: '0.75rem', color: 'text.secondary', letterSpacing: '0.02em', whiteSpace: 'nowrap', verticalAlign: 'middle', px: 1.5 }}>
                   <TableSortLabel active={sortBy === 'check_in'} direction={sortBy === 'check_in' ? sortOrder : 'asc'} onClick={() => handleSort('check_in')}>
-                    CHECK-IN
+                    Check-in
                   </TableSortLabel>
                 </TableCell>
-                <TableCell sx={{ minWidth: 160, fontWeight: 700, color: 'text.secondary', letterSpacing: '0.05em', whiteSpace: 'nowrap', verticalAlign: 'middle', px: 2 }}>
+                <TableCell align="center" sx={{ fontWeight: 600, fontSize: '0.75rem', color: 'text.secondary', letterSpacing: '0.02em', whiteSpace: 'nowrap', verticalAlign: 'middle', px: 1.5 }}>
                   <TableSortLabel active={sortBy === 'check_out'} direction={sortBy === 'check_out' ? sortOrder : 'asc'} onClick={() => handleSort('check_out')}>
-                    CHECK-OUT
+                    Check-out
                   </TableSortLabel>
                 </TableCell>
-                <TableCell sx={{ minWidth: 140, fontWeight: 700, color: 'text.secondary', letterSpacing: '0.05em', whiteSpace: 'nowrap', verticalAlign: 'middle', px: 2 }}>
+                <TableCell align="center" sx={{ fontWeight: 600, fontSize: '0.75rem', color: 'text.secondary', letterSpacing: '0.02em', whiteSpace: 'nowrap', verticalAlign: 'middle', px: 1.5 }}>
                   <TableSortLabel active={sortBy === 'status'} direction={sortBy === 'status' ? sortOrder : 'asc'} onClick={() => handleSort('status')}>
-                    STATUS
+                    Status
                   </TableSortLabel>
                 </TableCell>
-                <TableCell sx={{ minWidth: 140, fontWeight: 700, color: 'text.secondary', letterSpacing: '0.05em', whiteSpace: 'nowrap', verticalAlign: 'middle', px: 2 }}>
+                <TableCell align="center" sx={{ fontWeight: 600, fontSize: '0.75rem', color: 'text.secondary', letterSpacing: '0.02em', whiteSpace: 'nowrap', verticalAlign: 'middle', px: 1.5 }}>
                   <TableSortLabel active={sortBy === 'grand_total'} direction={sortBy === 'grand_total' ? sortOrder : 'asc'} onClick={() => handleSort('grand_total')}>
-                    PAYMENT
+                    Payment
                   </TableSortLabel>
                 </TableCell>
-                <TableCell sx={{ minWidth: 180, fontWeight: 700, color: 'text.secondary', textAlign: 'center', letterSpacing: '0.05em', whiteSpace: 'nowrap', verticalAlign: 'middle', px: 2 }}>ACTIONS</TableCell>
+                <TableCell align="center" sx={{ fontWeight: 600, fontSize: '0.75rem', color: 'text.secondary', letterSpacing: '0.02em', whiteSpace: 'nowrap', verticalAlign: 'middle', px: 1.5 }}>Actions</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -595,31 +595,31 @@ const Bookings = () => {
                 // Skeleton Rows
                 Array.from(new Array(rowsPerPage)).map((_, index) => (
                   <TableRow key={index}>
-                    <TableCell><Skeleton width="80%" /></TableCell>
-                    <TableCell><Skeleton width="100%" /><Skeleton width="60%" /></TableCell>
-                    <TableCell><Skeleton width="50%" /></TableCell>
-                    <TableCell><Skeleton width="80%" /></TableCell>
-                    <TableCell><Skeleton width="80%" /></TableCell>
-                    <TableCell><Skeleton width="80%" height={32} /></TableCell>
-                    <TableCell><Skeleton width="100%" /><Skeleton width="50%" /></TableCell>
-                    <TableCell align="right"><Skeleton width={100} sx={{ ml: 'auto' }} /></TableCell>
+                    <TableCell align="center"><Skeleton width="80%" /></TableCell>
+                    <TableCell align="center"><Skeleton width="100%" /><Skeleton width="60%" /></TableCell>
+                    <TableCell align="center"><Skeleton width="50%" /></TableCell>
+                    <TableCell align="center"><Skeleton width="80%" /></TableCell>
+                    <TableCell align="center"><Skeleton width="80%" /></TableCell>
+                    <TableCell align="center"><Skeleton width="80%" height={32} /></TableCell>
+                    <TableCell align="center"><Skeleton width="100%" /><Skeleton width="50%" /></TableCell>
+                    <TableCell align="center"><Skeleton width={100} sx={{ mx: 'auto' }} /></TableCell>
                   </TableRow>
                 ))
               ) : bookings.length > 0 ? (
                 bookings.map((row) => (
                   <TableRow key={row.id} sx={{ '&:last-child td, &:last-child th': { border: 0 }, '&:hover': { bgcolor: 'action.hover' } }}>
-                    <TableCell sx={{ fontWeight: 600, color: 'text.primary' }}>{row.id}</TableCell>
-                    <TableCell>
+                    <TableCell align="center" sx={{ fontWeight: 600, color: 'text.primary' }}>{row.id}</TableCell>
+                    <TableCell align="center">
                       <Typography variant="body2" sx={{ fontWeight: 600, color: 'text.primary' }}>{row.customer_name}</Typography>
                       <Typography variant="caption" sx={{ color: 'text.secondary' }}>{row.phone}</Typography>
                     </TableCell>
-                    <TableCell>
+                    <TableCell align="center">
                       <Typography variant="body2" sx={{ fontWeight: 600, color: 'primary.main' }}>{row.room_number}</Typography>
                       <Typography variant="caption" sx={{ color: 'text.secondary' }}>{row.room_type || 'Unknown'}</Typography>
                     </TableCell>
-                    <TableCell sx={{ color: 'text.secondary' }}>{row.check_in?.substring(0, 10)}</TableCell>
-                    <TableCell sx={{ color: 'text.secondary' }}>{row.check_out?.substring(0, 10)}</TableCell>
-                    <TableCell>
+                    <TableCell align="center" sx={{ color: 'text.secondary' }}>{row.check_in?.substring(0, 10)}</TableCell>
+                    <TableCell align="center" sx={{ color: 'text.secondary' }}>{row.check_out?.substring(0, 10)}</TableCell>
+                    <TableCell align="center">
                       <Chip 
                         label={row.status} 
                         size="small"
@@ -630,13 +630,13 @@ const Bookings = () => {
                         }} 
                       />
                     </TableCell>
-                    <TableCell>
+                    <TableCell align="center">
                       <Typography variant="body2" sx={{ color: 'text.primary' }}>Total: ${parseFloat(row.grand_total).toFixed(2)}</Typography>
                       <Typography variant="caption" sx={{ color: parseFloat(row.balance) > 0 ? 'error.main' : 'success.main', fontWeight: 600 }}>
                         Bal: ${parseFloat(row.balance).toFixed(2)}
                       </Typography>
                     </TableCell>
-                    <TableCell align="right">
+                    <TableCell align="center">
                       <Tooltip title="View">
                         <IconButton size="small" onClick={() => handleOpenView(row)} sx={{ bgcolor: 'rgba(2, 136, 209, 0.08)', color: 'info.main', '&:hover': { bgcolor: 'info.main', color: '#fff' }, mr: 0.5 }}>
                           <ViewIcon fontSize="small" />

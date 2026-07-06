@@ -49,16 +49,16 @@ const getPaymentLabel = (balance, grandTotal) => {
 
 const StatCard = ({ title, value, icon, color }) => (
   <Card sx={{ height: '100%', borderRadius: 3, boxShadow: '0 4px 12px rgba(0,0,0,0.05)' }}>
-    <CardContent sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', p: 3 }}>
-      <Box>
-        <Typography variant="body2" sx={{ color: 'text.secondary', fontWeight: 600, mb: 1, letterSpacing: '0.05em', textTransform: 'uppercase' }}>
+    <CardContent sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', p: 2, '&:last-child': { pb: 2 } }}>
+      <Box sx={{ minWidth: 0, mr: 1 }}>
+        <Typography variant="body2" noWrap sx={{ display: 'block', color: '#2A1F18', fontWeight: 700, mb: 0.5, letterSpacing: '0.02em', textTransform: 'uppercase', fontSize: '0.75rem' }}>
           {title}
         </Typography>
-        <Typography variant="h4" sx={{ fontWeight: 700, color: 'text.primary' }}>
+        <Typography variant="h4" sx={{ fontWeight: 700, color: '#2A1F18' }}>
           {value}
         </Typography>
       </Box>
-      <Box sx={{ width: 56, height: 56, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', bgcolor: `${color}15`, color }}>
+      <Box sx={{ width: 48, height: 48, flexShrink: 0, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', bgcolor: `${color}15`, color }}>
         {icon}
       </Box>
     </CardContent>
@@ -68,7 +68,7 @@ const StatCard = ({ title, value, icon, color }) => (
 const Reception = () => {
   const { showSnackbar, showDialog } = useUI();
   const [bookings, setBookings] = useState(initialBookings);
-  
+
   const [searchQuery, setSearchQuery] = useState('');
   const [dateFilter, setDateFilter] = useState('');
   const [statusFilter, setStatusFilter] = useState('All');
@@ -96,8 +96,8 @@ const Reception = () => {
     setCurrentBooking(booking);
     if (action === 'checkin') {
       if (booking.status === 'Checked In') {
-         showSnackbar('Guest is already checked in.', 'warning');
-         return;
+        showSnackbar('Guest is already checked in.', 'warning');
+        return;
       }
       setOpenCheckIn(true);
     }
@@ -129,13 +129,13 @@ const Reception = () => {
 
   const confirmCheckOut = () => {
     if (currentBooking.balance > 0) {
-       showDialog({
-         title: 'Pending Payment',
-         content: `Guest has a pending balance of $${currentBooking.balance}. Continue with checkout?`,
-         confirmText: 'Yes, Checkout',
-         onConfirm: () => processCheckOut()
-       });
-       return;
+      showDialog({
+        title: 'Pending Payment',
+        content: `Guest has a pending balance of $${currentBooking.balance}. Continue with checkout?`,
+        confirmText: 'Yes, Checkout',
+        onConfirm: () => processCheckOut()
+      });
+      return;
     }
     processCheckOut();
   };
@@ -159,12 +159,12 @@ const Reception = () => {
   const confirmChangeRoom = () => {
     if (!newRoom) return showSnackbar('Please select a room', 'error');
     if (newRoom === currentBooking.room) return showSnackbar('Please select a different room', 'warning');
-    
+
     // Check if new room is available
     const roomIsAvailable = roomsData.find(r => r.roomNumber === newRoom)?.status === 'Available';
     if (!roomIsAvailable) {
-       // Just a warning for mock purpose, we will allow it
-       showSnackbar('Selected room might not be available.', 'warning');
+      // Just a warning for mock purpose, we will allow it
+      showSnackbar('Selected room might not be available.', 'warning');
     }
 
     setBookings(bookings.map(b => b.id === currentBooking.id ? { ...b, room: newRoom } : b));
@@ -174,15 +174,15 @@ const Reception = () => {
 
   const filteredBookings = useMemo(() => {
     return bookings.filter(b => {
-      const matchesSearch = 
+      const matchesSearch =
         b.customerName.toLowerCase().includes(searchQuery.toLowerCase()) ||
         b.id.toLowerCase().includes(searchQuery.toLowerCase()) ||
         b.room.includes(searchQuery) ||
         b.phone.includes(searchQuery);
-      
+
       const matchesDate = dateFilter ? (b.checkIn === dateFilter || b.checkOut === dateFilter) : true;
       const matchesStatus = statusFilter === 'All' ? true : b.status === statusFilter;
-      
+
       return matchesSearch && matchesDate && matchesStatus;
     });
   }, [bookings, searchQuery, dateFilter, statusFilter]);
@@ -199,20 +199,12 @@ const Reception = () => {
       </Box>
 
       {/* Dashboard Cards */}
-      <Grid container spacing={3} sx={{ mb: 4 }}>
-        <Grid item xs={12} sm={6} md={3}>
-          <StatCard title="Today's Check-ins" value={todaysCheckIns} icon={<CheckInIcon fontSize="large" />} color="#2e7d32" />
-        </Grid>
-        <Grid item xs={12} sm={6} md={3}>
-          <StatCard title="Today's Check-outs" value={todaysCheckOuts} icon={<CheckOutIcon fontSize="large" />} color="#d32f2f" />
-        </Grid>
-        <Grid item xs={12} sm={6} md={3}>
-          <StatCard title="Current Guests" value={currentGuestsCount} icon={<PeopleIcon fontSize="large" />} color="#1976d2" />
-        </Grid>
-        <Grid item xs={12} sm={6} md={3}>
-          <StatCard title="Upcoming Arrivals" value={upcomingArrivals} icon={<EventAvailableIcon fontSize="large" />} color="#ed6c02" />
-        </Grid>
-      </Grid>
+      <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr', md: 'repeat(4, minmax(0, 1fr))' }, gap: 3, mb: 4 }}>
+        <StatCard title="Today's Check-ins" value={todaysCheckIns} icon={<CheckInIcon fontSize="large" />} color="#332218ff" />
+        <StatCard title="Today's Check-outs" value={todaysCheckOuts} icon={<CheckOutIcon fontSize="large" />} color="#2A1F18" />
+        <StatCard title="Current Guests" value={currentGuestsCount} icon={<PeopleIcon fontSize="large" />} color="#2A1F18" />
+        <StatCard title="Upcoming Arrivals" value={upcomingArrivals} icon={<EventAvailableIcon fontSize="large" />} color="#2A1F18" />
+      </Box>
 
       {/* Search & Filters */}
       <Card sx={{ mb: 4, borderRadius: 3, boxShadow: '0 4px 12px rgba(0,0,0,0.05)' }}>
@@ -284,18 +276,18 @@ const Reception = () => {
                     <Typography variant="body2" sx={{ color: 'text.secondary', fontSize: '0.8rem' }}>Out: {row.checkOut}</Typography>
                   </TableCell>
                   <TableCell>
-                     <Chip 
-                        label={row.status} 
-                        size="small" 
-                        sx={{ bgcolor: getStatusColor(row.status), color: '#fff', fontWeight: 600, fontSize: '0.7rem' }} 
-                     />
+                    <Chip
+                      label={row.status}
+                      size="small"
+                      sx={{ bgcolor: getStatusColor(row.status), color: '#fff', fontWeight: 600, fontSize: '0.7rem' }}
+                    />
                   </TableCell>
                   <TableCell>
-                    <Chip 
-                        label={getPaymentLabel(row.balance, row.grandTotal)} 
-                        size="small" 
-                        sx={{ bgcolor: getPaymentColor(row.balance), color: '#fff', fontWeight: 600, fontSize: '0.7rem' }} 
-                     />
+                    <Chip
+                      label={getPaymentLabel(row.balance, row.grandTotal)}
+                      size="small"
+                      sx={{ bgcolor: getPaymentColor(row.balance), color: '#fff', fontWeight: 600, fontSize: '0.7rem' }}
+                    />
                   </TableCell>
                   <TableCell align="right">
                     <Tooltip title="Check In">
@@ -306,7 +298,7 @@ const Reception = () => {
                       </span>
                     </Tooltip>
                     <Tooltip title="Check Out">
-                       <span>
+                      <span>
                         <IconButton size="small" onClick={() => handleActionClick('checkout', row)} disabled={row.status !== 'Checked In'} sx={{ color: 'error.main', mr: 0.5 }}>
                           <CheckOutIcon fontSize="small" />
                         </IconButton>
@@ -361,7 +353,7 @@ const Reception = () => {
                 Confirm check-in for <strong>{currentBooking.customerName}</strong> to Room <strong>{currentBooking.room}</strong>?
               </Typography>
               <Typography variant="body2" sx={{ color: 'text.secondary', mb: 3 }}>
-                Check-out Date: {currentBooking.checkOut} <br/>
+                Check-out Date: {currentBooking.checkOut} <br />
                 Balance Due: ${currentBooking.balance}
               </Typography>
             </DialogContent>
@@ -375,7 +367,7 @@ const Reception = () => {
           <Dialog open={openCheckOut} onClose={() => setOpenCheckOut(false)} maxWidth="sm" fullWidth>
             <DialogTitle sx={{ fontWeight: 700, borderBottom: '1px solid', borderColor: 'divider' }}>Check Out Guest</DialogTitle>
             <DialogContent sx={{ p: 3, pt: 4 }}>
-               <Typography variant="body1" sx={{ mb: 2 }}>
+              <Typography variant="body1" sx={{ mb: 2 }}>
                 Ready to check out <strong>{currentBooking.customerName}</strong> from Room <strong>{currentBooking.room}</strong>?
               </Typography>
               {currentBooking.balance > 0 && (
@@ -386,7 +378,7 @@ const Reception = () => {
                 </Box>
               )}
               <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                Total Charges: ${currentBooking.grandTotal} <br/>
+                Total Charges: ${currentBooking.grandTotal} <br />
               </Typography>
             </DialogContent>
             <DialogActions sx={{ p: 3, pt: 0 }}>
@@ -402,15 +394,15 @@ const Reception = () => {
               <Typography variant="body2" sx={{ mb: 3, color: 'text.secondary' }}>
                 Current Check-out: <strong>{currentBooking.checkOut}</strong>
               </Typography>
-              <TextField 
-                fullWidth 
-                type="date" 
-                label="New Check-out Date" 
-                size="small" 
-                value={extendDate} 
-                onChange={(e) => setExtendDate(e.target.value)} 
+              <TextField
+                fullWidth
+                type="date"
+                label="New Check-out Date"
+                size="small"
+                value={extendDate}
+                onChange={(e) => setExtendDate(e.target.value)}
                 InputLabelProps={{ shrink: true }}
-                required 
+                required
               />
             </DialogContent>
             <DialogActions sx={{ p: 3, pt: 0 }}>
@@ -426,13 +418,13 @@ const Reception = () => {
               <Typography variant="body2" sx={{ mb: 3, color: 'text.secondary' }}>
                 Current Room: <strong>{currentBooking.room}</strong>
               </Typography>
-              <TextField 
-                fullWidth 
+              <TextField
+                fullWidth
                 select
-                label="Select New Room" 
-                size="small" 
-                value={newRoom} 
-                onChange={(e) => setNewRoom(e.target.value)} 
+                label="Select New Room"
+                size="small"
+                value={newRoom}
+                onChange={(e) => setNewRoom(e.target.value)}
               >
                 {availableRooms.map(r => (
                   <MenuItem key={r.id} value={r.roomNumber}>
@@ -473,29 +465,29 @@ const Reception = () => {
                   <Divider sx={{ my: 1 }} />
                 </Grid>
                 <Grid item xs={12}>
-                   <Typography variant="overline" color="text.secondary">Payment Summary</Typography>
-                   <Grid container spacing={2}>
-                      <Grid item xs={4}>
-                         <Typography variant="body2" color="text.secondary">Room Charges</Typography>
-                         <Typography variant="body1" sx={{ fontWeight: 600 }}>${currentBooking.roomCharges}</Typography>
-                      </Grid>
-                      <Grid item xs={4}>
-                         <Typography variant="body2" color="text.secondary">Taxes</Typography>
-                         <Typography variant="body1" sx={{ fontWeight: 600 }}>${currentBooking.gst}</Typography>
-                      </Grid>
-                      <Grid item xs={4}>
-                         <Typography variant="body2" color="text.secondary">Total</Typography>
-                         <Typography variant="body1" sx={{ fontWeight: 600 }}>${currentBooking.grandTotal}</Typography>
-                      </Grid>
-                      <Grid item xs={4}>
-                         <Typography variant="body2" color="text.secondary">Advance Paid</Typography>
-                         <Typography variant="body1" sx={{ fontWeight: 600, color: 'success.main' }}>${currentBooking.advance}</Typography>
-                      </Grid>
-                      <Grid item xs={4}>
-                         <Typography variant="body2" color="text.secondary">Balance Due</Typography>
-                         <Typography variant="body1" sx={{ fontWeight: 600, color: currentBooking.balance > 0 ? 'error.main' : 'text.primary' }}>${currentBooking.balance}</Typography>
-                      </Grid>
-                   </Grid>
+                  <Typography variant="overline" color="text.secondary">Payment Summary</Typography>
+                  <Grid container spacing={2}>
+                    <Grid item xs={4}>
+                      <Typography variant="body2" color="text.secondary">Room Charges</Typography>
+                      <Typography variant="body1" sx={{ fontWeight: 600 }}>${currentBooking.roomCharges}</Typography>
+                    </Grid>
+                    <Grid item xs={4}>
+                      <Typography variant="body2" color="text.secondary">Taxes</Typography>
+                      <Typography variant="body1" sx={{ fontWeight: 600 }}>${currentBooking.gst}</Typography>
+                    </Grid>
+                    <Grid item xs={4}>
+                      <Typography variant="body2" color="text.secondary">Total</Typography>
+                      <Typography variant="body1" sx={{ fontWeight: 600 }}>${currentBooking.grandTotal}</Typography>
+                    </Grid>
+                    <Grid item xs={4}>
+                      <Typography variant="body2" color="text.secondary">Advance Paid</Typography>
+                      <Typography variant="body1" sx={{ fontWeight: 600, color: 'success.main' }}>${currentBooking.advance}</Typography>
+                    </Grid>
+                    <Grid item xs={4}>
+                      <Typography variant="body2" color="text.secondary">Balance Due</Typography>
+                      <Typography variant="body1" sx={{ fontWeight: 600, color: currentBooking.balance > 0 ? 'error.main' : 'text.primary' }}>${currentBooking.balance}</Typography>
+                    </Grid>
+                  </Grid>
                 </Grid>
               </Grid>
             </DialogContent>

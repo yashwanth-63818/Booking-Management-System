@@ -22,17 +22,16 @@ import { useUI } from '../context/UIContext';
 
 // Initial Mock Data
 const initialStaff = [
-  { id: 'EMP-001', name: 'Maria Garcia', department: 'Housekeeping', role: 'Housekeeping Staff', phone: '1234567890', email: 'maria@kachinn.com', joiningDate: '2025-01-15', status: 'Active' },
-  { id: 'EMP-002', name: 'John Smith', department: 'Housekeeping', role: 'Housekeeping Staff', phone: '1234567891', email: 'john@kachinn.com', joiningDate: '2025-02-20', status: 'On Leave' },
-  { id: 'EMP-003', name: 'Anita Patel', department: 'Housekeeping', role: 'Manager', phone: '1234567892', email: 'anita@kachinn.com', joiningDate: '2024-11-10', status: 'Active' },
-  { id: 'EMP-004', name: 'David Kim', department: 'Maintenance', role: 'Maintenance Staff', phone: '1234567893', email: 'david@kachinn.com', joiningDate: '2025-03-05', status: 'Active' },
-  { id: 'EMP-005', name: 'Sarah Connor', department: 'Security', role: 'Manager', phone: '1234567894', email: 'sarah@kachinn.com', joiningDate: '2024-06-12', status: 'Active' },
-  { id: 'EMP-006', name: 'James Wilson', department: 'Reception', role: 'Receptionist', phone: '1234567895', email: 'james@kachinn.com', joiningDate: '2025-05-01', status: 'Active' },
-  { id: 'EMP-007', name: 'Linda Brown', department: 'Administration', role: 'Admin', phone: '1234567896', email: 'linda@kachinn.com', joiningDate: '2023-08-22', status: 'Inactive' },
+  { id: 'EMP-001', name: 'Maria Garcia', department: 'Housekeeping', phone: '1234567890', email: 'maria@kachinn.com', joiningDate: '2025-01-15', status: 'Active' },
+  { id: 'EMP-002', name: 'John Smith', department: 'Housekeeping', phone: '1234567891', email: 'john@kachinn.com', joiningDate: '2025-02-20', status: 'On Leave' },
+  { id: 'EMP-003', name: 'Anita Patel', department: 'Housekeeping', phone: '1234567892', email: 'anita@kachinn.com', joiningDate: '2024-11-10', status: 'Active' },
+  { id: 'EMP-004', name: 'David Kim', department: 'Maintenance', phone: '1234567893', email: 'david@kachinn.com', joiningDate: '2025-03-05', status: 'Active' },
+  { id: 'EMP-005', name: 'Sarah Connor', department: 'Security', phone: '1234567894', email: 'sarah@kachinn.com', joiningDate: '2024-06-12', status: 'Active' },
+  { id: 'EMP-006', name: 'James Wilson', department: 'Reception', phone: '1234567895', email: 'james@kachinn.com', joiningDate: '2025-05-01', status: 'Active' },
+  { id: 'EMP-007', name: 'Linda Brown', department: 'Administration', phone: '1234567896', email: 'linda@kachinn.com', joiningDate: '2023-08-22', status: 'Inactive' },
 ];
 
 const DEPARTMENTS = ['Reception', 'Housekeeping', 'Maintenance', 'Administration', 'Security'];
-const ROLES = ['Admin', 'Manager', 'Receptionist', 'Housekeeping Staff', 'Maintenance Staff'];
 const STATUSES = ['Active', 'On Leave', 'Inactive'];
 
 const StatCard = ({ title, value, icon, color }) => (
@@ -61,7 +60,6 @@ const Staff = () => {
   // Filters
   const [searchQuery, setSearchQuery] = useState('');
   const [departmentFilter, setDepartmentFilter] = useState('All');
-  const [roleFilter, setRoleFilter] = useState('All');
   const [statusFilter, setStatusFilter] = useState('All');
 
   // Modals
@@ -72,7 +70,7 @@ const Staff = () => {
 
   // Form State
   const [formData, setFormData] = useState({
-    id: '', name: '', department: '', role: '', phone: '', email: '', joiningDate: '', status: 'Active'
+    id: '', name: '', department: '', phone: '', email: '', joiningDate: '', status: 'Active'
   });
 
   // Derived Stats
@@ -85,9 +83,8 @@ const Staff = () => {
   const filteredStaff = staffList.filter(s => {
     const matchesSearch = s.name.toLowerCase().includes(searchQuery.toLowerCase()) || s.id.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesDept = departmentFilter === 'All' || s.department === departmentFilter;
-    const matchesRole = roleFilter === 'All' || s.role === roleFilter;
     const matchesStatus = statusFilter === 'All' || s.status === statusFilter;
-    return matchesSearch && matchesDept && matchesRole && matchesStatus;
+    return matchesSearch && matchesDept && matchesStatus;
   });
 
   const getStatusColor = (status) => {
@@ -106,7 +103,7 @@ const Staff = () => {
     } else {
       setIsEditing(false);
       setFormData({
-        id: '', name: '', department: '', role: '', phone: '', email: '', joiningDate: '', status: 'Active'
+        id: '', name: '', department: '', phone: '', email: '', joiningDate: '', status: 'Active'
       });
     }
     setOpenForm(true);
@@ -235,16 +232,6 @@ const Staff = () => {
           <TextField
             select
             size="small"
-            value={roleFilter}
-            onChange={(e) => setRoleFilter(e.target.value)}
-            sx={{ minWidth: 160, '& .MuiOutlinedInput-root': { borderRadius: 2 } }}
-          >
-            <MenuItem value="All">All Roles</MenuItem>
-            {ROLES.map(r => <MenuItem key={r} value={r}>{r}</MenuItem>)}
-          </TextField>
-          <TextField
-            select
-            size="small"
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
             sx={{ minWidth: 140, '& .MuiOutlinedInput-root': { borderRadius: 2 } }}
@@ -263,7 +250,6 @@ const Staff = () => {
               <TableCell sx={{ fontWeight: 600, color: 'text.secondary', py: 2 }}>ID</TableCell>
               <TableCell sx={{ fontWeight: 600, color: 'text.secondary' }}>Name</TableCell>
               <TableCell sx={{ fontWeight: 600, color: 'text.secondary' }}>Department</TableCell>
-              <TableCell sx={{ fontWeight: 600, color: 'text.secondary' }}>Role</TableCell>
               <TableCell sx={{ fontWeight: 600, color: 'text.secondary' }}>Contact</TableCell>
               <TableCell sx={{ fontWeight: 600, color: 'text.secondary' }}>Joined</TableCell>
               <TableCell sx={{ fontWeight: 600, color: 'text.secondary' }}>Status</TableCell>
@@ -287,7 +273,6 @@ const Staff = () => {
                   </Box>
                 </TableCell>
                 <TableCell>{row.department}</TableCell>
-                <TableCell>{row.role}</TableCell>
                 <TableCell>
                   <Typography variant="body2">{row.phone}</Typography>
                   <Typography variant="caption" color="text.secondary">{row.email}</Typography>
@@ -339,109 +324,77 @@ const Staff = () => {
         <form onSubmit={handleSaveStaff}>
           <DialogTitle fontWeight="bold">{isEditing ? 'Edit Staff Member' : 'Add New Staff'}</DialogTitle>
           <DialogContent dividers sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-            <Grid container spacing={2}>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  fullWidth
-                  label="Employee ID"
-                  name="id"
-                  value={formData.id}
-                  onChange={handleFormChange}
-                  required
-                  size="small"
-                  disabled={isEditing}
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  fullWidth
-                  label="Full Name"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleFormChange}
-                  required
-                  size="small"
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  fullWidth
-                  type="email"
-                  label="Email Address"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleFormChange}
-                  required
-                  size="small"
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  fullWidth
-                  label="Phone Number"
-                  name="phone"
-                  value={formData.phone}
-                  onChange={handleFormChange}
-                  required
-                  size="small"
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  select
-                  fullWidth
-                  label="Department"
-                  name="department"
-                  value={formData.department}
-                  onChange={handleFormChange}
-                  required
-                  size="small"
-                >
-                  {DEPARTMENTS.map(d => <MenuItem key={d} value={d}>{d}</MenuItem>)}
-                </TextField>
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  select
-                  fullWidth
-                  label="Role"
-                  name="role"
-                  value={formData.role}
-                  onChange={handleFormChange}
-                  required
-                  size="small"
-                >
-                  {ROLES.map(r => <MenuItem key={r} value={r}>{r}</MenuItem>)}
-                </TextField>
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  fullWidth
-                  type="date"
-                  label="Joining Date"
-                  name="joiningDate"
-                  value={formData.joiningDate}
-                  onChange={handleFormChange}
-                  required
-                  size="small"
-                  InputLabelProps={{ shrink: true }}
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  select
-                  fullWidth
-                  label="Status"
-                  name="status"
-                  value={formData.status}
-                  onChange={handleFormChange}
-                  required
-                  size="small"
-                >
-                  {STATUSES.map(s => <MenuItem key={s} value={s}>{s}</MenuItem>)}
-                </TextField>
-              </Grid>
-            </Grid>
+            <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr' }, gap: 2 }}>
+              <TextField
+                fullWidth
+                label="Employee ID"
+                name="id"
+                value={formData.id}
+                onChange={handleFormChange}
+                required
+                size="small"
+                disabled={isEditing}
+              />
+              <TextField
+                fullWidth
+                label="Full Name"
+                name="name"
+                value={formData.name}
+                onChange={handleFormChange}
+                required
+                size="small"
+              />
+              <TextField
+                fullWidth
+                type="email"
+                label="Email Address"
+                name="email"
+                value={formData.email}
+                onChange={handleFormChange}
+                required
+                size="small"
+              />
+              <TextField
+                fullWidth
+                label="Phone Number"
+                name="phone"
+                value={formData.phone}
+                onChange={handleFormChange}
+                required
+                size="small"
+              />
+              <TextField
+                select
+                fullWidth
+                label="Department"
+                name="department"
+                value={formData.department}
+                onChange={handleFormChange}
+                required
+                size="small"
+              >
+                {DEPARTMENTS.map(d => <MenuItem key={d} value={d}>{d}</MenuItem>)}
+              </TextField>
+              <TextField
+                fullWidth
+                type="date"
+                label="Joining Date"
+                name="joiningDate"
+                value={formData.joiningDate}
+                onChange={handleFormChange}
+                required
+                size="small"
+                InputLabelProps={{ shrink: true }}
+                sx={{
+                  '& .MuiInputLabel-root': {
+                    transform: 'translate(14px, -9px) scale(0.75) !important',
+                  },
+                  '& .MuiOutlinedInput-notchedOutline legend': {
+                    maxWidth: '100% !important',
+                  }
+                }}
+              />
+            </Box>
           </DialogContent>
           <DialogActions sx={{ p: 2 }}>
             <Button onClick={() => setOpenForm(false)} color="inherit">Cancel</Button>
@@ -463,7 +416,7 @@ const Staff = () => {
               </Avatar>
               <Box>
                 <Typography variant="h6" fontWeight="bold">{currentStaff.name}</Typography>
-                <Typography variant="body2" color="text.secondary">{currentStaff.role} - {currentStaff.department}</Typography>
+                <Typography variant="body2" color="text.secondary">{currentStaff.department}</Typography>
               </Box>
             </Box>
             <Divider />
