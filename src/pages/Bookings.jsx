@@ -551,43 +551,43 @@ const Bookings = () => {
         <TableContainer component={Paper} elevation={0}>
           <Table sx={{ minWidth: 800 }}>
             <TableHead>
-              <TableRow sx={{ bgcolor: 'background.default' }}>
-                <TableCell sx={{ minWidth: 100, fontWeight: 700, color: 'text.secondary', letterSpacing: '0.05em' }}>
+              <TableRow sx={{ bgcolor: 'background.default', height: '56px' }}>
+                <TableCell sx={{ minWidth: 80, fontWeight: 700, color: 'text.secondary', letterSpacing: '0.05em', whiteSpace: 'nowrap', verticalAlign: 'middle', px: 2 }}>
                   <TableSortLabel active={sortBy === 'id'} direction={sortBy === 'id' ? sortOrder : 'asc'} onClick={() => handleSort('id')}>
                     ID
                   </TableSortLabel>
                 </TableCell>
-                <TableCell sx={{ minWidth: 150, fontWeight: 700, color: 'text.secondary', letterSpacing: '0.05em' }}>
+                <TableCell sx={{ minWidth: 160, fontWeight: 700, color: 'text.secondary', letterSpacing: '0.05em', whiteSpace: 'nowrap', verticalAlign: 'middle', px: 2 }}>
                   <TableSortLabel active={sortBy === 'customer_name'} direction={sortBy === 'customer_name' ? sortOrder : 'asc'} onClick={() => handleSort('customer_name')}>
                     CUSTOMER
                   </TableSortLabel>
                 </TableCell>
-                <TableCell sx={{ minWidth: 120, fontWeight: 700, color: 'text.secondary', letterSpacing: '0.05em' }}>
+                <TableCell sx={{ minWidth: 120, fontWeight: 700, color: 'text.secondary', letterSpacing: '0.05em', whiteSpace: 'nowrap', verticalAlign: 'middle', px: 2 }}>
                   <TableSortLabel active={sortBy === 'room_number'} direction={sortBy === 'room_number' ? sortOrder : 'asc'} onClick={() => handleSort('room_number')}>
                     ROOM
                   </TableSortLabel>
                 </TableCell>
-                <TableCell sx={{ minWidth: 120, fontWeight: 700, color: 'text.secondary', letterSpacing: '0.05em' }}>
+                <TableCell sx={{ minWidth: 160, fontWeight: 700, color: 'text.secondary', letterSpacing: '0.05em', whiteSpace: 'nowrap', verticalAlign: 'middle', px: 2 }}>
                   <TableSortLabel active={sortBy === 'check_in'} direction={sortBy === 'check_in' ? sortOrder : 'asc'} onClick={() => handleSort('check_in')}>
                     CHECK-IN
                   </TableSortLabel>
                 </TableCell>
-                <TableCell sx={{ minWidth: 120, fontWeight: 700, color: 'text.secondary', letterSpacing: '0.05em' }}>
+                <TableCell sx={{ minWidth: 160, fontWeight: 700, color: 'text.secondary', letterSpacing: '0.05em', whiteSpace: 'nowrap', verticalAlign: 'middle', px: 2 }}>
                   <TableSortLabel active={sortBy === 'check_out'} direction={sortBy === 'check_out' ? sortOrder : 'asc'} onClick={() => handleSort('check_out')}>
                     CHECK-OUT
                   </TableSortLabel>
                 </TableCell>
-                <TableCell sx={{ minWidth: 120, fontWeight: 700, color: 'text.secondary', letterSpacing: '0.05em' }}>
+                <TableCell sx={{ minWidth: 140, fontWeight: 700, color: 'text.secondary', letterSpacing: '0.05em', whiteSpace: 'nowrap', verticalAlign: 'middle', px: 2 }}>
                   <TableSortLabel active={sortBy === 'status'} direction={sortBy === 'status' ? sortOrder : 'asc'} onClick={() => handleSort('status')}>
                     STATUS
                   </TableSortLabel>
                 </TableCell>
-                <TableCell sx={{ minWidth: 130, fontWeight: 700, color: 'text.secondary', letterSpacing: '0.05em' }}>
+                <TableCell sx={{ minWidth: 140, fontWeight: 700, color: 'text.secondary', letterSpacing: '0.05em', whiteSpace: 'nowrap', verticalAlign: 'middle', px: 2 }}>
                   <TableSortLabel active={sortBy === 'grand_total'} direction={sortBy === 'grand_total' ? sortOrder : 'asc'} onClick={() => handleSort('grand_total')}>
                     PAYMENT
                   </TableSortLabel>
                 </TableCell>
-                <TableCell sx={{ minWidth: 180, fontWeight: 700, color: 'text.secondary', textAlign: 'center', letterSpacing: '0.05em' }}>ACTIONS</TableCell>
+                <TableCell sx={{ minWidth: 180, fontWeight: 700, color: 'text.secondary', textAlign: 'center', letterSpacing: '0.05em', whiteSpace: 'nowrap', verticalAlign: 'middle', px: 2 }}>ACTIONS</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -701,14 +701,14 @@ const Bookings = () => {
             {isEditing ? 'Edit Booking' : 'Add New Booking'}
           </Typography>
         </DialogTitle>
-        <DialogContent sx={{ p: 4 }}>
-          <Grid container spacing={3}>
-            {/* Customer Details Section */}
-            <Grid item xs={12}>
-              <Typography variant="subtitle2" sx={{ color: 'primary.main', fontWeight: 700, mb: 1, textTransform: 'uppercase', letterSpacing: '0.05em', borderBottom: '2px solid', borderColor: 'primary.main', display: 'inline-block', pb: 0.5 }}>
-                Customer Details
-              </Typography>
-              <Grid container spacing={2} sx={{ mt: 1 }}>
+        <DialogContent sx={{ p: 4, display: 'flex', flexDirection: 'column', gap: 4 }}>
+          
+          {/* Customer Details Section */}
+          <Box>
+            <Typography variant="subtitle2" sx={{ color: 'primary.main', fontWeight: 700, mb: 2, textTransform: 'uppercase', letterSpacing: '0.05em', borderBottom: '2px solid', borderColor: 'primary.main', display: 'inline-block', pb: 0.5 }}>
+              Customer Details
+            </Typography>
+            <Grid container spacing={2}>
                 <Grid item xs={12} sm={6}>
                   <TextField 
                     fullWidth 
@@ -751,17 +751,16 @@ const Bookings = () => {
                 <Grid item xs={12} sm={12} md={9}>
                   <TextField fullWidth label="Address" name="address" size="small" value={currentBooking.address} onChange={handleChange} />
                 </Grid>
-              </Grid>
             </Grid>
+          </Box>
 
-            {/* Booking Details Section */}
-            <Grid item xs={12}>
-              <Divider sx={{ my: 1 }} />
-              <Typography variant="subtitle2" sx={{ color: 'primary.main', fontWeight: 700, mb: 1, textTransform: 'uppercase', letterSpacing: '0.05em', borderBottom: '2px solid', borderColor: 'primary.main', display: 'inline-block', pb: 0.5 }}>
-                Booking Details
-              </Typography>
-            </Grid>
-            <Grid item xs={12} sm={6} md={3}>
+          {/* Booking Details Section */}
+          <Box>
+            <Typography variant="subtitle2" sx={{ color: 'primary.main', fontWeight: 700, mb: 2, textTransform: 'uppercase', letterSpacing: '0.05em', borderBottom: '2px solid', borderColor: 'primary.main', display: 'inline-block', pb: 0.5 }}>
+              Booking Details
+            </Typography>
+            <Grid container spacing={2}>
+            <Grid item xs={12} sm={6} md={4}>
               <TextField 
                 fullWidth 
                 type="date" 
@@ -776,7 +775,7 @@ const Bookings = () => {
                 helperText={formErrors.checkIn}
               />
             </Grid>
-            <Grid item xs={12} sm={6} md={3}>
+            <Grid item xs={12} sm={6} md={4}>
               <TextField 
                 fullWidth 
                 type="date" 
@@ -791,7 +790,7 @@ const Bookings = () => {
                 helperText={formErrors.checkOut}
               />
             </Grid>
-            <Grid item xs={12} sm={6} md={3}>
+            <Grid item xs={12} sm={6} md={4}>
               <TextField 
                 fullWidth 
                 select 
@@ -811,27 +810,28 @@ const Bookings = () => {
                 ))}
               </TextField>
             </Grid>
-            <Grid item xs={12} sm={6} md={3}>
+            <Grid item xs={12} sm={6} md={4}>
               <TextField fullWidth type="number" label="Number of Guests" name="guests" size="small" value={currentBooking.guests} onChange={handleChange} inputProps={{ min: 1 }} required />
             </Grid>
-            <Grid item xs={12} sm={6} md={3}>
+            <Grid item xs={12} sm={6} md={4}>
               <TextField fullWidth select label="Status" name="status" size="small" value={currentBooking.status} onChange={handleChange}>
                 {['Pending', 'Confirmed', 'Checked In', 'Checked Out', 'Cancelled'].map(option => (
                   <MenuItem key={option} value={option}>{option}</MenuItem>
                 ))}
               </TextField>
             </Grid>
-            <Grid item xs={12} sm={12} md={9}>
+            <Grid item xs={12} sm={12} md={12}>
               <TextField fullWidth label="Special Requests" name="specialRequests" size="small" value={currentBooking.specialRequests} onChange={handleChange} />
             </Grid>
-
-            {/* Payment Details Section */}
-            <Grid item xs={12}>
-              <Divider sx={{ my: 1 }} />
-              <Typography variant="subtitle2" sx={{ color: 'primary.main', fontWeight: 700, mb: 1, textTransform: 'uppercase', letterSpacing: '0.05em', borderBottom: '2px solid', borderColor: 'primary.main', display: 'inline-block', pb: 0.5 }}>
-                Financials
-              </Typography>
             </Grid>
+          </Box>
+
+          {/* Payment Details Section */}
+          <Box>
+            <Typography variant="subtitle2" sx={{ color: 'primary.main', fontWeight: 700, mb: 2, textTransform: 'uppercase', letterSpacing: '0.05em', borderBottom: '2px solid', borderColor: 'primary.main', display: 'inline-block', pb: 0.5 }}>
+              Financials
+            </Typography>
+            <Grid container spacing={2}>
             <Grid item xs={12} sm={6} md={3}>
               <TextField fullWidth select label="Payment Method" name="paymentMethod" size="small" value={currentBooking.paymentMethod} onChange={handleChange}>
                 {['Cash', 'Credit Card', 'UPI', 'Bank Transfer'].map(option => (
@@ -842,9 +842,11 @@ const Bookings = () => {
             <Grid item xs={12} sm={6} md={3}>
               <TextField fullWidth type="number" label="Advance Amount" name="advance" size="small" value={currentBooking.advance} onChange={handleChange} InputProps={{ startAdornment: <InputAdornment position="start">$</InputAdornment> }} />
             </Grid>
+            </Grid>
+          </Box>
             
-            {/* Auto-Calculated Fields Display */}
-            <Grid item xs={12} sx={{ mt: 2 }}>
+          {/* Auto-Calculated Fields Display */}
+          <Box sx={{ mt: 2 }}>
               <Paper sx={{ p: 2, bgcolor: 'background.default', display: 'flex', flexWrap: 'wrap', gap: 3 }}>
                 <Box>
                   <Typography variant="caption" sx={{ color: 'text.secondary', fontWeight: 600 }}>DAYS</Typography>
@@ -869,8 +871,7 @@ const Bookings = () => {
                   </Typography>
                 </Box>
               </Paper>
-            </Grid>
-          </Grid>
+          </Box>
         </DialogContent>
         <DialogActions sx={{ p: 3, pt: 0 }}>
           <Button onClick={handleCloseForm} color="inherit" sx={{ fontWeight: 600 }}>Cancel</Button>

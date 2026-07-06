@@ -17,6 +17,9 @@ const Billing = lazy(() => import('./pages/Billing'));
 const Reports = lazy(() => import('./pages/Reports'));
 const Settings = lazy(() => import('./pages/Settings'));
 const CalendarView = lazy(() => import('./pages/CalendarView'));
+const Staff = lazy(() => import('./pages/Staff'));
+const Housekeeping = lazy(() => import('./pages/Housekeeping'));
+const Reception = lazy(() => import('./pages/Reception'));
 const NotFound = lazy(() => import('./pages/NotFound'));
 const ServerError = lazy(() => import('./pages/ServerError'));
 
@@ -57,6 +60,9 @@ function AppContent() {
           <Route path="guests" element={<Suspense fallback={<GlobalLoader />}><Guests /></Suspense>} />
           <Route path="billing" element={<Suspense fallback={<GlobalLoader />}><Billing /></Suspense>} />
           <Route path="reports" element={<Suspense fallback={<GlobalLoader />}><Reports /></Suspense>} />
+          <Route path="staff" element={<Suspense fallback={<GlobalLoader />}><Staff /></Suspense>} />
+          <Route path="housekeeping" element={<Suspense fallback={<GlobalLoader />}><Housekeeping /></Suspense>} />
+          <Route path="reception" element={<Suspense fallback={<GlobalLoader />}><Reception /></Suspense>} />
           <Route path="settings" element={
             <AdminRoute>
               <Suspense fallback={<GlobalLoader />}><Settings /></Suspense>

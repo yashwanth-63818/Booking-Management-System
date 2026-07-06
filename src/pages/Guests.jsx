@@ -421,7 +421,7 @@ const Guests = () => {
             </Grid>
             <Grid item xs={6}>
               <Typography variant="caption" sx={{ color: 'text.secondary' }}>STATUS</Typography>
-              <Typography variant="body2" sx={{ fontWeight: 600, color: getStatusColor(currentGuest.status) }}>{currentGuest.status}</Typography>
+              <Typography variant="body2" sx={{ fontWeight: 600, color: getBookingStatusColor(currentGuest.status) }}>{currentGuest.status}</Typography>
             </Grid>
             <Grid item xs={6}>
               <Typography variant="caption" sx={{ color: 'text.secondary' }}>CHECK IN</Typography>
