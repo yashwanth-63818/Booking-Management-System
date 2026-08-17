@@ -14,7 +14,11 @@ import {
   Visibility as VisibilityIcon,
   PlayArrow as PlayArrowIcon,
   CleaningServices as CleaningServicesIcon,
-  Warning as WarningIcon
+  Warning as WarningIcon,
+  Sanitizer as SanitizerIcon,
+  Autorenew as AutorenewIcon,
+  TaskAlt as TaskAltIcon,
+  Handyman as HandymanIcon
 } from '@mui/icons-material';
 import { useUI } from '../context/UIContext';
 import { roomsData as initialRooms } from '../services/dummyData';
@@ -208,16 +212,16 @@ const Housekeeping = () => {
       {/* Dashboard Cards */}
       <Grid container spacing={3} sx={{ mb: 4 }}>
         <Grid item xs={12} sm={6} md={3}>
-          <StatCard title="Rooms to Clean" value={roomsToClean} icon={<CleaningServicesIcon fontSize="large" />} color="#d32f2f" />
+          <StatCard title="Rooms to Clean" value={roomsToClean} icon={<SanitizerIcon fontSize="large" />} color="#d32f2f" />
         </Grid>
         <Grid item xs={12} sm={6} md={3}>
-          <StatCard title="Under Cleaning" value={roomsCleaning} icon={<PlayArrowIcon fontSize="large" />} color="#0288d1" />
+          <StatCard title="Under Cleaning" value={roomsCleaning} icon={<AutorenewIcon fontSize="large" />} color="#0288d1" />
         </Grid>
         <Grid item xs={12} sm={6} md={3}>
-          <StatCard title="Clean Rooms" value={cleanRooms} icon={<CheckCircleIcon fontSize="large" />} color="#2e7d32" />
+          <StatCard title="Clean Rooms" value={cleanRooms} icon={<TaskAltIcon fontSize="large" />} color="#2e7d32" />
         </Grid>
         <Grid item xs={12} sm={6} md={3}>
-          <StatCard title="Maintenance" value={maintenanceRooms} icon={<BuildIcon fontSize="large" />} color="#ed6c02" />
+          <StatCard title="Maintenance" value={maintenanceRooms} icon={<HandymanIcon fontSize="large" />} color="#ed6c02" />
         </Grid>
       </Grid>
 

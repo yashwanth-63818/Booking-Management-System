@@ -108,105 +108,127 @@ const Rooms = () => {
 
   return (
     <Box>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3, flexWrap: 'wrap', gap: 2 }}>
-        <Typography variant="h4" sx={{ fontWeight: 700, color: 'text.primary' }}>
-          Room Management
-        </Typography>
-        <Button 
-          variant="contained" 
-          color="primary"
-          startIcon={<AddIcon />}
-          onClick={() => handleOpenDialog()}
-        >
-          Add New Room
-        </Button>
+      {/* We keep a subtle Add Room button for functionality, though not in the design screenshot */}
+      <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: 2 }}>
+        <Button size="small" variant="text" startIcon={<AddIcon />} onClick={() => handleOpenDialog()} sx={{ color: '#8C5A35', fontWeight: 600 }}>Add Room</Button>
       </Box>
 
       {/* Filters */}
-      <Card sx={{ mb: 4 }}>
-        <CardContent sx={{ display: 'flex', flexWrap: 'wrap', gap: 2, alignItems: 'center' }}>
-          <TextField
-            placeholder="Search Room..."
-            variant="outlined"
-            size="small"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            sx={{ 
-              flexGrow: 1, 
-              minWidth: 250,
-              '& .MuiOutlinedInput-root': {
-                borderRadius: 3,
-                bgcolor: 'rgba(111, 78, 55, 0.04)',
-                '&:hover fieldset': { borderColor: 'primary.main' },
+      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, mb: 4, overflowX: 'auto', pb: 1, '&::-webkit-scrollbar': { display: 'none' } }}>
+        <TextField
+          placeholder="Search rooms..."
+          variant="outlined"
+          size="small"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          sx={{ 
+            minWidth: 220,
+            '& .MuiOutlinedInput-root': {
+              borderRadius: '50px',
+              bgcolor: '#fff',
+              '& fieldset': { borderColor: '#E0E0E0' },
+              '&:hover fieldset': { borderColor: '#CFA365' },
+              '&.Mui-focused fieldset': { borderColor: '#8C5A35' },
+            }
+          }}
+          InputProps={{
+            startAdornment: <InputAdornment position="start"><SearchIcon sx={{ color: '#9e9e9e' }} /></InputAdornment>,
+          }}
+        />
+        
+        {['All', 'Available', 'Occupied', 'Reserved', 'Cleaning', 'Maintenance'].map((status) => (
+          <Button
+            key={status}
+            variant={filterStatus === (status === 'All' ? '' : status) ? 'contained' : 'outlined'}
+            onClick={() => setFilterStatus(status === 'All' ? '' : status)}
+            sx={{
+              borderRadius: '50px',
+              textTransform: 'none',
+              px: 3,
+              py: 0.75,
+              borderColor: '#E0E0E0',
+              fontWeight: 600,
+              fontSize: '0.85rem',
+              color: filterStatus === (status === 'All' ? '' : status) ? '#fff' : '#555',
+              bgcolor: filterStatus === (status === 'All' ? '' : status) ? '#8C5A35' : '#fff',
+              boxShadow: 'none',
+              '&:hover': {
+                bgcolor: filterStatus === (status === 'All' ? '' : status) ? '#7A4A25' : '#f5f5f5',
+                borderColor: '#E0E0E0',
+                boxShadow: 'none'
               }
             }}
-            InputProps={{
-              startAdornment: <InputAdornment position="start"><SearchIcon /></InputAdornment>,
-            }}
-          />
-          
-          <ToggleButtonGroup
-            value={filterStatus}
-            exclusive
-            onChange={(e, val) => setFilterStatus(val)}
-            size="small"
-            sx={{ '& .MuiToggleButton-root': { px: 2, borderRadius: 2 } }}
           >
-            <ToggleButton value="">All</ToggleButton>
-            <ToggleButton value="Available">Available</ToggleButton>
-            <ToggleButton value="Occupied">Occupied</ToggleButton>
-            <ToggleButton value="Reserved">Reserved</ToggleButton>
-          </ToggleButtonGroup>
-
-          <ToggleButtonGroup
-            value={filterType}
-            exclusive
-            onChange={(e, val) => setFilterType(val)}
-            size="small"
-            sx={{ '& .MuiToggleButton-root': { px: 2, borderRadius: 2 } }}
-          >
-            <ToggleButton value="Deluxe">Deluxe</ToggleButton>
-            <ToggleButton value="Suite">Suite</ToggleButton>
-          </ToggleButtonGroup>
-
-          <ToggleButtonGroup
-            value={filterAC}
-            exclusive
-            onChange={(e, val) => setFilterAC(val)}
-            size="small"
-            sx={{ '& .MuiToggleButton-root': { px: 2, borderRadius: 2 } }}
-          >
-            <ToggleButton value="AC">AC</ToggleButton>
-            <ToggleButton value="NonAC">Non AC</ToggleButton>
-          </ToggleButtonGroup>
-        </CardContent>
-      </Card>
+            {status}
+          </Button>
+        ))}
+        <Button
+          variant="outlined"
+          sx={{
+            borderRadius: '50px', textTransform: 'none', px: 3, py: 0.75, borderColor: '#E0E0E0', color: '#555', fontWeight: 600, fontSize: '0.85rem', bgcolor: '#fff', boxShadow: 'none',
+            '&:hover': { borderColor: '#E0E0E0', bgcolor: '#f5f5f5' }
+          }}
+        >
+          More ⌄
+        </Button>
+      </Box>
 
       {/* Skeletons while loading */}
       {isLoading ? (
-        <Grid container spacing={3}>
-          {[1, 2, 3, 4, 5, 6].map((i) => (
-            <Grid item xs={12} sm={6} md={4} xl={3} key={i}>
-              <Card sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
-                <Skeleton variant="rectangular" height={220} />
-                <CardContent sx={{ flexGrow: 1 }}>
-                  <Skeleton variant="text" width="60%" height={40} />
-                  <Skeleton variant="text" width="40%" />
+        <Grid container spacing={3} alignItems="stretch">
+          {[1, 2, 3, 4].map((i) => (
+            <Grid item xs={12} md={6} key={i}>
+              <Card sx={{ 
+                display: 'flex', 
+                flexDirection: { xs: 'column', sm: 'row' }, 
+                height: '100%', 
+                minHeight: '240px', 
+                borderRadius: '16px', 
+                boxShadow: '0 2px 8px rgba(0,0,0,0.05)', 
+                border: '1px solid #f0f0f0',
+                overflow: 'hidden'
+              }}>
+                <Box sx={{ width: { xs: '100%', sm: '45%' }, height: { xs: '200px', sm: 'auto' }, flexShrink: 0, display: 'flex' }}>
+                  <Skeleton variant="rectangular" sx={{ width: '100%', height: '100%' }} />
+                </Box>
+                <Box sx={{ p: 3, width: { xs: '100%', sm: '55%' }, display: 'flex', flexDirection: 'column', flexGrow: 1 }}>
+                  <Skeleton variant="text" width="40%" height={40} />
+                  <Skeleton variant="text" width="60%" />
                   <Skeleton variant="text" width="80%" />
-                </CardContent>
+                  <Skeleton variant="text" width="70%" />
+                  <Box sx={{ mt: 'auto', pt: 2, display: 'flex', justifyContent: 'space-between' }}>
+                    <Skeleton variant="rectangular" width={100} height={36} sx={{ borderRadius: '24px' }} />
+                    <Skeleton variant="rectangular" width={120} height={36} sx={{ borderRadius: '24px' }} />
+                  </Box>
+                </Box>
               </Card>
             </Grid>
           ))}
         </Grid>
       ) : (
-        <Grid container spacing={3}>
+        <Grid container spacing={3} alignItems="stretch">
           {filteredRooms.map((room) => (
-            <Grid item xs={12} sm={6} md={4} xl={3} key={room.id}>
-              <Card sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
-                <Box sx={{ position: 'relative' }}>
+            <Grid item xs={12} md={6} key={room.id}>
+              <Card sx={{ 
+                display: 'flex', 
+                flexDirection: { xs: 'column', sm: 'row' }, 
+                height: '100%',
+                minHeight: '240px', 
+                borderRadius: '16px', 
+                boxShadow: '0 4px 12px rgba(0,0,0,0.05)',
+                border: '1px solid #f0f0f0',
+                overflow: 'hidden'
+              }}>
+                <Box sx={{ 
+                  position: 'relative', 
+                  width: { xs: '100%', sm: '45%' }, 
+                  height: { xs: '200px', sm: 'auto' }, 
+                  flexShrink: 0, 
+                  display: 'flex' 
+                }}>
                   <CardMedia
                     component="img"
-                    height="220"
+                    sx={{ width: '100%', height: '100%', objectFit: 'cover' }}
                     image={room.image}
                     alt={`Room ${room.roomNumber}`}
                   />
@@ -214,66 +236,66 @@ const Rooms = () => {
                     label={room.status}
                     size="small"
                     sx={{ 
-                      position: 'absolute', top: 12, right: 12, bgcolor: getStatusColor(room.status), color: '#fff',
+                      position: 'absolute', top: 16, left: 16, 
+                      bgcolor: room.status === 'Available' ? '#1b8b40' : room.status === 'Occupied' ? '#d32f2f' : room.status === 'Reserved' ? '#e67e22' : '#0288d1',
+                      color: '#fff',
                       fontWeight: 600, fontSize: '0.75rem', px: 1, py: 0.5,
-                      boxShadow: '0 4px 12px rgba(0,0,0,0.2)', backdropFilter: 'blur(4px)'
+                      borderRadius: '8px'
                     }}
                   />
                 </Box>
                 
-                <CardContent sx={{ p: 2.5, flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
-                  <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 1 }}>
-                    <Typography variant="h5" sx={{ fontWeight: 700, color: 'text.primary' }}>
-                      {room.roomNumber}
-                    </Typography>
-                    <Typography variant="h6" sx={{ fontWeight: 700, color: 'primary.main' }}>
-                      ${room.price}<Typography component="span" variant="body2" color="text.secondary">/night</Typography>
-                    </Typography>
+                <Box sx={{ p: 3, width: { xs: '100%', sm: '55%' }, display: 'flex', flexDirection: 'column', flexGrow: 1, bgcolor: '#fff' }}>
+                  <Typography variant="h5" sx={{ fontWeight: 800, color: '#222', mb: 0.5 }}>
+                    {room.roomNumber}
+                  </Typography>
+                  <Typography variant="h6" sx={{ fontWeight: 700, color: '#333', mb: 1.5, fontSize: '1.1rem' }}>
+                    ${room.price}<Typography component="span" variant="body2" sx={{ color: '#777', fontWeight: 500 }}>/night</Typography>
+                  </Typography>
+                  
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
+                    <BedIcon sx={{ color: '#888', fontSize: 18 }} /> 
+                    <Typography variant="body2" sx={{ color: '#555', fontWeight: 500 }}>{room.type}</Typography>
+                  </Box>
+
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
+                    <PeopleIcon sx={{ color: '#888', fontSize: 18 }} />
+                    <Typography variant="body2" sx={{ color: '#555', fontWeight: 500 }}>Capacity: {room.capacity}</Typography>
+                    <Typography variant="body2" sx={{ color: '#ccc', mx: 0.5 }}>|</Typography>
+                    <AcIcon sx={{ color: '#888', fontSize: 18 }} />
+                    <Typography variant="body2" sx={{ color: '#555', fontWeight: 500 }}>{room.ac ? 'AC' : 'Non AC'}</Typography>
                   </Box>
                   
-                  <Typography variant="body2" color="text.secondary" sx={{ mb: 2, display: 'flex', alignItems: 'center', gap: 0.5 }}>
-                    <BedIcon fontSize="small" /> {room.type}
-                  </Typography>
-
-                  <Grid container spacing={1} sx={{ mb: 2 }}>
-                    <Grid item xs={6}>
-                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                        <PeopleIcon fontSize="small" color="action" />
-                        <Typography variant="body2" sx={{ fontWeight: 500 }}>Capacity: {room.capacity}</Typography>
-                      </Box>
-                    </Grid>
-                    <Grid item xs={6}>
-                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                        <AcIcon fontSize="small" color="action" />
-                        <Typography variant="body2" sx={{ fontWeight: 500 }}>{room.ac ? 'AC' : 'Non AC'}</Typography>
-                      </Box>
-                    </Grid>
-                    <Grid item xs={12}>
-                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                        <CleanIcon fontSize="small" color="action" />
-                        <Typography variant="body2" sx={{ fontWeight: 500 }}>Cleaning: {room.cleaningStatus}</Typography>
-                      </Box>
-                    </Grid>
-                  </Grid>
-                </CardContent>
-                <Divider />
-                <CardActions sx={{ justifyContent: 'space-between', p: 2, bgcolor: 'background.default', mt: 'auto' }}>
-                  <Box sx={{ display: 'flex', gap: 1 }}>
-                    <IconButton size="small" sx={{ bgcolor: 'rgba(111, 78, 55, 0.08)', color: 'primary.main', '&:hover': { bgcolor: 'primary.main', color: '#fff' } }} title="View"><ViewIcon fontSize="small" /></IconButton>
-                    <IconButton size="small" sx={{ bgcolor: 'rgba(2, 136, 209, 0.08)', color: 'info.main', '&:hover': { bgcolor: 'info.main', color: '#fff' } }} title="Edit" onClick={() => handleOpenDialog(room)}><EditIcon fontSize="small" /></IconButton>
-                    <IconButton size="small" sx={{ bgcolor: 'rgba(211, 47, 47, 0.08)', color: 'error.main', '&:hover': { bgcolor: 'error.main', color: '#fff' } }} title="Delete" onClick={() => handleDeleteRoom(room.id, room.roomNumber)}><DeleteIcon fontSize="small" /></IconButton>
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 2 }}>
+                    <CleanIcon sx={{ color: '#888', fontSize: 18 }} />
+                    <Typography variant="body2" sx={{ color: '#555', fontWeight: 500 }}>Cleaning: {room.cleaningStatus}</Typography>
                   </Box>
-                  <Button 
-                    variant="contained" 
-                    size="small"
-                    startIcon={<BookIcon />}
-                    disabled={room.status !== 'Available'}
-                    disableElevation
-                    sx={{ fontWeight: 600, px: 2, borderRadius: 2 }}
-                  >
-                    Book Room
-                  </Button>
-                </CardActions>
+                  
+                  <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mt: 'auto', pt: 2 }}>
+                    <Box sx={{ display: 'flex', gap: 1 }}>
+                      <IconButton size="small" sx={{ bgcolor: '#f5f5f5', color: '#555', '&:hover': { bgcolor: '#e0e0e0' }, width: 32, height: 32 }} title="View"><ViewIcon sx={{ fontSize: 18 }} /></IconButton>
+                      <IconButton size="small" sx={{ bgcolor: '#e3f2fd', color: '#1976d2', '&:hover': { bgcolor: '#bbdefb' }, width: 32, height: 32 }} title="Edit" onClick={() => handleOpenDialog(room)}><EditIcon sx={{ fontSize: 18 }} /></IconButton>
+                      <IconButton size="small" sx={{ bgcolor: '#ffebee', color: '#d32f2f', '&:hover': { bgcolor: '#ffcdd2' }, width: 32, height: 32 }} title="Delete" onClick={() => handleDeleteRoom(room.id, room.roomNumber)}><DeleteIcon sx={{ fontSize: 18 }} /></IconButton>
+                    </Box>
+                    <Button 
+                      variant="contained" 
+                      size="small"
+                      startIcon={<BookIcon sx={{ fontSize: 18 }} />}
+                      disableElevation
+                      sx={{ 
+                        fontWeight: 600, 
+                        px: 2, 
+                        py: 1,
+                        borderRadius: '24px',
+                        bgcolor: '#664229', // Dark brown matching "Book Room" in screenshot
+                        textTransform: 'none',
+                        '&:hover': { bgcolor: '#4a2f1b' }
+                      }}
+                    >
+                      Book Room
+                    </Button>
+                  </Box>
+                </Box>
               </Card>
             </Grid>
           ))}
@@ -287,8 +309,6 @@ const Rooms = () => {
                 onAction={() => {
                   setSearchQuery('');
                   setFilterStatus('');
-                  setFilterType('');
-                  setFilterAC('');
                 }}
               />
             </Grid>

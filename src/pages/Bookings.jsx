@@ -63,8 +63,6 @@ const Bookings = () => {
   const { showSnackbar, showDialog } = useUI();
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
-  
   // Dialogs state
   const [openForm, setOpenForm] = useState(false);
   const [openView, setOpenView] = useState(false);
@@ -273,6 +271,7 @@ const Bookings = () => {
         }
       }
     } catch (error) {
+      console.error("Booking save error:", error);
       showSnackbar("Failed to save booking", "error");
     }
   };
@@ -288,6 +287,7 @@ const Bookings = () => {
           showSnackbar(`Booking ${id} deleted`, "info");
           fetchBookingsData();
         } catch (error) {
+          console.error("Booking delete error:", error);
           showSnackbar("Failed to delete booking", "error");
         }
       }
@@ -304,7 +304,7 @@ const Bookings = () => {
     printWindow.document.write(`
       <html>
         <head>
-          <title>Print Booking ${booking.id || booking.id}</title>
+          <title>Print Booking ${booking.id}</title>
           <style>
             body { font-family: sans-serif; padding: 20px; }
             table { width: 100%; border-collapse: collapse; margin-top: 20px; }
@@ -317,7 +317,7 @@ const Bookings = () => {
             <h2>Kach Inn</h2>
             <h3>Booking Invoice / Details</h3>
           </div>
-          <p><strong>Booking ID:</strong> ${booking.id || booking.id}</p>
+          <p><strong>Booking ID:</strong> ${booking.id}</p>
           <p><strong>Customer Name:</strong> ${booking.customerName || booking.customer_name}</p>
           <p><strong>Phone:</strong> ${booking.phone}</p>
           
@@ -356,6 +356,7 @@ const Bookings = () => {
       }
       return data;
     } catch (error) {
+      console.error("Export data fetch error:", error);
       showSnackbar("Failed to fetch export data", "error");
       return null;
     }

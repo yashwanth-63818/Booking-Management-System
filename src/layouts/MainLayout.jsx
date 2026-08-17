@@ -12,7 +12,7 @@ const MainLayout = () => {
   };
 
   return (
-    <Box sx={{ display: 'flex', minHeight: '100vh', bgcolor: 'background.default' }}>
+    <Box sx={{ display: 'flex', height: '100vh', overflow: 'hidden', bgcolor: 'background.default' }}>
       <Topbar handleDrawerToggle={handleDrawerToggle} />
       <Sidebar mobileOpen={mobileOpen} handleDrawerToggle={handleDrawerToggle} />
       
@@ -24,7 +24,9 @@ const MainLayout = () => {
           width: { xs: '100%', md: `calc(100% - 260px)` },
           maxWidth: '100%',
           overflowX: 'hidden',
-          mt: 8 // for Topbar spacing
+          overflowY: 'auto',
+          mt: '71px', // for Topbar spacing
+          height: 'calc(100vh - 71px)'
         }}
       >
         <Outlet />

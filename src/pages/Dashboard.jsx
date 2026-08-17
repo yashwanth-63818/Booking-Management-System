@@ -24,13 +24,14 @@ const Sparkline = ({ color }) => (
 const MetricCard = ({ icon, label, value, secondaryText, secondaryTextColor = '#6B6B6B', sparklineColor }) => (
   <Card sx={{ 
     height: '100%', 
+    bgcolor: '#fff',
     borderRadius: '24px', 
     boxShadow: '0px 2px 12px rgba(0, 0, 0, 0.04)', 
     border: 'none', 
     transition: 'transform 0.2s, box-shadow 0.2s', 
     '&:hover': { transform: 'translateY(-2px)', boxShadow: '0px 8px 24px rgba(0, 0, 0, 0.08)' }
   }}>
-    <CardContent sx={{ p: 3, '&:last-child': { pb: 3 }, display: 'flex', alignItems: 'center', gap: 2.5 }}>
+    <CardContent sx={{ p: 3, '&:last-child': { pb: 3 }, display: 'flex', alignItems: 'center', gap: 2.5, height: '100%', boxSizing: 'border-box' }}>
       <Box sx={{ 
         width: 56, 
         height: 56, 
@@ -44,19 +45,19 @@ const MetricCard = ({ icon, label, value, secondaryText, secondaryTextColor = '#
       }}>
         {React.cloneElement(icon, { fontSize: 'medium' })}
       </Box>
-      <Box sx={{ display: 'flex', flexDirection: 'column', overflow: 'hidden', flexGrow: 1, alignItems: 'flex-start', justifyContent: 'center' }}>
-        <Typography variant="body2" sx={{ color: '#1F1F1F', fontWeight: 600, mb: 0.5, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+      <Box sx={{ display: 'flex', flexDirection: 'column', flexGrow: 1, alignItems: 'flex-start', justifyContent: 'center', minWidth: 0, pr: 1 }}>
+        <Typography variant="body2" sx={{ color: '#1F1F1F', fontWeight: 600, mb: 0.5 }}>
           {label}
         </Typography>
-        <Typography variant="h3" sx={{ fontWeight: 700, color: '#1F1F1F', mb: 0.5, lineHeight: 1 }}>
+        <Typography variant="h4" sx={{ fontWeight: 700, color: '#1F1F1F', mb: 0.5, lineHeight: 1 }}>
           {value}
         </Typography>
-        <Typography variant="caption" sx={{ color: secondaryTextColor, fontWeight: 500, display: 'flex', alignItems: 'center', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+        <Typography variant="caption" sx={{ color: secondaryTextColor, fontWeight: 500 }}>
           {secondaryText}
         </Typography>
       </Box>
       {sparklineColor && (
-        <Box sx={{ display: 'flex', alignItems: 'flex-end', height: '100%', ml: 1, pb: 1 }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', ml: 1, flexShrink: 0 }}>
           <Sparkline color={sparklineColor} />
         </Box>
       )}
@@ -96,18 +97,24 @@ const Dashboard = () => {
     return (
       <Box sx={{ p: { xs: 2, md: 4 } }}>
         <Skeleton variant="text" width={250} height={40} sx={{ mb: 4 }} />
-        {[1,2,3].map((section) => (
-          <Box key={section} sx={{ mb: 4 }}>
-            <Skeleton variant="text" width={150} height={30} sx={{ mb: 2 }} />
-            <Grid container spacing={3}>
-              {[1,2,3,4].map(i => (
-                <Grid item xs={12} sm={6} md={3} key={`sk1-${i}`}>
-                  <Skeleton variant="rectangular" height={120} sx={{ borderRadius: 3 }} />
-                </Grid>
-              ))}
-            </Grid>
+        <Box sx={{ mb: 4 }}>
+          <Skeleton variant="text" width={220} height={30} sx={{ mb: 2 }} />
+          <Box sx={{ display: 'grid', gridTemplateColumns: { xs: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)', md: 'repeat(4, 1fr)' }, gap: 3 }}>
+            {[1,2,3,4].map(i => <Skeleton key={i} variant="rectangular" height={120} sx={{ borderRadius: 3 }} />)}
           </Box>
-        ))}
+        </Box>
+        <Box sx={{ mb: 4 }}>
+          <Skeleton variant="text" width={180} height={30} sx={{ mb: 2 }} />
+          <Box sx={{ display: 'grid', gridTemplateColumns: { xs: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)', md: 'repeat(4, 1fr)' }, gap: 3 }}>
+            {[1,2,3].map(i => <Skeleton key={i} variant="rectangular" height={120} sx={{ borderRadius: 3 }} />)}
+          </Box>
+        </Box>
+        <Box sx={{ mb: 4 }}>
+          <Skeleton variant="text" width={180} height={30} sx={{ mb: 2 }} />
+          <Box sx={{ display: 'grid', gridTemplateColumns: { xs: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)', md: 'repeat(4, 1fr)' }, gap: 3 }}>
+            {[1,2,3].map(i => <Skeleton key={i} variant="rectangular" height={120} sx={{ borderRadius: 3 }} />)}
+          </Box>
+        </Box>
       </Box>
     );
   }
@@ -144,121 +151,100 @@ const Dashboard = () => {
 
       {/* Row 1: Accommodation Overview */}
       <SectionHeader title="Accommodation Overview" />
-      <Grid container spacing={2} sx={{ mb: 4 }}>
-        <Grid item xs={12} sm={6} md={3} lg={3} xl={3}>
-          <MetricCard 
-            icon={<HotelIcon />} 
-            label="Total Rooms" 
-            value={totalRooms} 
-            secondaryText="All Rooms" 
-          />
-        </Grid>
-        <Grid item xs={12} sm={6} md={3} lg={3} xl={3}>
-          <MetricCard 
-            icon={<CheckCircleIcon />} 
-            label="Available Rooms" 
-            value={metrics.availableRooms} 
-            secondaryText={`${availablePercent}% Available`} 
-            secondaryTextColor="#15803D"
-          />
-        </Grid>
-        <Grid item xs={12} sm={6} md={3} lg={3} xl={3}>
-          <MetricCard 
-            icon={<MeetingRoomIcon />} 
-            label="Occupied Rooms" 
-            value={metrics.occupiedRooms} 
-            secondaryText={`${occupiedPercent}% Occupied`} 
-            secondaryTextColor="#DC2626"
-          />
-        </Grid>
-        <Grid item xs={12} sm={6} md={3} lg={3} xl={3}>
-          <MetricCard 
-            icon={<EventAvailableIcon />} 
-            label="Reserved Rooms" 
-            value={metrics.reservedRooms} 
-            secondaryText={`${reservedPercent}% Reserved`} 
-            secondaryTextColor="#A9744F"
-          />
-        </Grid>
-      </Grid>
+      <Box sx={{ 
+        display: 'grid', 
+        gridTemplateColumns: { xs: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)', md: 'repeat(4, 1fr)' }, 
+        gap: 3, 
+        mb: 4 
+      }}>
+        <MetricCard 
+          icon={<HotelIcon />} 
+          label="Total Rooms" 
+          value={totalRooms} 
+          secondaryText="All Rooms" 
+        />
+        <MetricCard 
+          icon={<CheckCircleIcon />} 
+          label="Available Rooms" 
+          value={metrics.availableRooms} 
+          secondaryText={`${availablePercent}% Available`} 
+          secondaryTextColor="#15803D"
+        />
+        <MetricCard 
+          icon={<MeetingRoomIcon />} 
+          label="Occupied Rooms" 
+          value={metrics.occupiedRooms} 
+          secondaryText={`${occupiedPercent}% Occupied`} 
+          secondaryTextColor="#DC2626"
+        />
+        <MetricCard 
+          icon={<EventAvailableIcon />} 
+          label="Reserved Rooms" 
+          value={metrics.reservedRooms} 
+          secondaryText={`${reservedPercent}% Reserved`} 
+          secondaryTextColor="#A9744F"
+        />
+      </Box>
 
       {/* Row 2: Reception Activities */}
       <SectionHeader title="Reception Activities" />
-      <Grid container spacing={2} sx={{ mb: 4 }}>
-        <Grid item xs={12} sm={6} md={3} lg={3} xl={3}>
-          <MetricCard 
-            icon={<LoginIcon />} 
-            label="Today's Check-ins" 
-            value={metrics.todaysCheckins} 
-            secondaryText="Upcoming arrivals"
-          />
-        </Grid>
-        <Grid item xs={12} sm={6} md={3} lg={3} xl={3}>
-          <MetricCard 
-            icon={<LogoutIcon />} 
-            label="Today's Check-outs" 
-            value={metrics.todaysCheckouts} 
-            secondaryText="Upcoming departures" 
-          />
-        </Grid>
-        <Grid item xs={12} sm={6} md={3} lg={3} xl={3}>
-          <MetricCard 
-            icon={<PeopleIcon />} 
-            label="Current Guests" 
-            value={metrics.currentGuests} 
-            secondaryText="Guests staying" 
-          />
-        </Grid>
-        <Grid item xs={12} sm={6} md={3} lg={3} xl={3}>
-          <MetricCard 
-            icon={<CleaningServicesIcon />} 
-            label="Housekeeping" 
-            value="4" 
-            secondaryText="Rooms to clean" 
-          />
-        </Grid>
-      </Grid>
+      <Box sx={{ 
+        display: 'grid', 
+        gridTemplateColumns: { xs: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)', md: 'repeat(4, 1fr)' }, 
+        gap: 3, 
+        mb: 4 
+      }}>
+        <MetricCard 
+          icon={<LoginIcon />} 
+          label="Today's Check-ins" 
+          value={metrics.todaysCheckins} 
+          secondaryText="Upcoming arrivals"
+        />
+        <MetricCard 
+          icon={<LogoutIcon />} 
+          label="Today's Check-outs" 
+          value={metrics.todaysCheckouts} 
+          secondaryText="Upcoming departures" 
+        />
+        <MetricCard 
+          icon={<PeopleIcon />} 
+          label="Current Guests" 
+          value={metrics.currentGuests} 
+          secondaryText="Guests staying" 
+        />
+
+      </Box>
 
       {/* Row 3: Revenue Overview */}
       <SectionHeader title="Revenue Overview" />
-      <Grid container spacing={2}>
-        <Grid item xs={12} sm={6} md={3} lg={3} xl={3}>
-          <MetricCard 
-            icon={<AttachMoneyIcon />} 
-            label="Revenue Today" 
-            value={`₹${Number(metrics.totalRevenueToday || 0).toLocaleString()}`} 
-            secondaryText="From 12 bookings"
-            sparklineColor="#15803D"
-          />
-        </Grid>
-        <Grid item xs={12} sm={6} md={3} lg={3} xl={3}>
-          <MetricCard 
-            icon={<TrendingUpIcon />} 
-            label="Monthly Revenue" 
-            value={`₹${Number(metrics.monthlyRevenue || 0).toLocaleString()}`} 
-            secondaryText="This month"
-            sparklineColor="#15803D"
-          />
-        </Grid>
-        <Grid item xs={12} sm={6} md={3} lg={3} xl={3}>
-          <MetricCard 
-            icon={<AccountBalanceWalletIcon />} 
-            label="Pending Payments" 
-            value={`₹${Number(metrics.pendingPayments || 0).toLocaleString()}`} 
-            secondaryText="From 8 bookings"
-            sparklineColor="#F59E0B"
-          />
-        </Grid>
-        <Grid item xs={12} sm={6} md={3} lg={3} xl={3}>
-          <MetricCard 
-            icon={<ReceiptIcon />} 
-            label="Pending Invoices" 
-            value="11" 
-            secondaryText="Total invoices"
-            sparklineColor="#DC2626"
-          />
-        </Grid>
-      </Grid>
+      <Box sx={{ 
+        display: 'grid', 
+        gridTemplateColumns: { xs: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)', md: 'repeat(4, 1fr)' }, 
+        gap: 3
+      }}>
+        <MetricCard 
+          icon={<AttachMoneyIcon />} 
+          label="Revenue Today" 
+          value={`₹${Number(metrics.totalRevenueToday || 0).toLocaleString()}`} 
+          secondaryText="From 12 bookings"
+          sparklineColor="#15803D"
+        />
+        <MetricCard 
+          icon={<TrendingUpIcon />} 
+          label="Monthly Revenue" 
+          value={`₹${Number(metrics.monthlyRevenue || 0).toLocaleString()}`} 
+          secondaryText="This month"
+          sparklineColor="#15803D"
+        />
+        <MetricCard 
+          icon={<AccountBalanceWalletIcon />} 
+          label="Pending Payments" 
+          value={`₹${Number(metrics.pendingPayments || 0).toLocaleString()}`} 
+          secondaryText="From 8 bookings"
+          sparklineColor="#F59E0B"
+        />
+
+      </Box>
 
       <Box sx={{ mt: 8, display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderTop: '1px solid #E8E2DD', pt: 3 }}>
         <Typography variant="body2" sx={{ color: '#6B6B6B' }}>
