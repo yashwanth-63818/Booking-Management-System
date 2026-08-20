@@ -10,7 +10,7 @@ import {
   Delete as DeleteIcon, Visibility as ViewIcon, EventAvailable as BookIcon,
   Hotel as HotelIcon
 } from '@mui/icons-material';
-import { roomsData as initialRoomsData } from '../services/dummyData';
+import { getRooms, createRoom, updateRoom, deleteRoom } from '../services/api';
 import EmptyState from '../components/EmptyState';
 import { useUI } from '../context/UIContext';
 
@@ -25,7 +25,7 @@ import { useUI } from '../context/UIContext';
   };
 
 const Rooms = () => {
-  const [rooms, setRooms] = useState(initialRoomsData);
+  const [rooms, setRooms] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [filterStatus, setFilterStatus] = useState('');
   const [filterType, setFilterType] = useState('');
@@ -33,10 +33,19 @@ const Rooms = () => {
   const [isLoading, setIsLoading] = useState(true);
   const { showSnackbar, showDialog } = useUI();
   
-  // Simulate network request
   useEffect(() => {
-    const timer = setTimeout(() => setIsLoading(false), 1000);
-    return () => clearTimeout(timer);
+    const fetchRooms = async () => {
+      try {
+        setIsLoading(true);
+        const data = await getRooms();
+        setRooms(data);
+      } catch (error) {
+        showSnackbar('Failed to load rooms', 'error');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchRooms();
   }, []);
 
   // Dialog state
@@ -59,30 +68,35 @@ const Rooms = () => {
   
   const handleCloseDialog = () => setOpenDialog(false);
 
-  const handleAddRoom = () => {
+  const handleAddRoom = async () => {
     if (!newRoom.roomNumber || !newRoom.price) {
       showSnackbar("Please fill in all required fields", "error");
       return;
     }
 
-    if (editRoomId) {
-      // Edit existing room
-      setRooms(rooms.map(r => r.id === editRoomId ? newRoom : r));
-      showSnackbar(`Room ${newRoom.roomNumber} updated successfully!`, "success");
-    } else {
-      // Add new room
-      const newId = (Math.random() * 1000).toFixed(0);
-      const roomToAdd = {
-        ...newRoom,
-        id: newId,
-        status: 'Available',
-        cleaningStatus: 'Clean',
-        image: newRoom.image || 'https://images.unsplash.com/photo-1566665797739-1674de7a421a?w=500&q=80'
-      };
-      setRooms([roomToAdd, ...rooms]);
-      showSnackbar(`Room ${newRoom.roomNumber} added successfully!`, "success");
+    try {
+      if (editRoomId) {
+        // Edit existing room
+        await updateRoom(editRoomId, newRoom);
+        setRooms(rooms.map(r => r.id === editRoomId ? { ...r, ...newRoom } : r));
+        showSnackbar(`Room ${newRoom.roomNumber} updated successfully!`, "success");
+      } else {
+        // Add new room
+        const roomToAdd = {
+          ...newRoom,
+          status: 'Available',
+          cleaningStatus: 'Clean',
+          image: newRoom.image || 'https://images.unsplash.com/photo-1566665797739-1674de7a421a?w=500&q=80'
+        };
+        const response = await createRoom(roomToAdd);
+        roomToAdd.id = response.id;
+        setRooms([roomToAdd, ...rooms]);
+        showSnackbar(`Room ${newRoom.roomNumber} added successfully!`, "success");
+      }
+      handleCloseDialog();
+    } catch (error) {
+      showSnackbar(error.response?.data?.message || 'Failed to save room', 'error');
     }
-    handleCloseDialog();
   };
 
   const handleDeleteRoom = (roomId, roomNum) => {
@@ -90,9 +104,14 @@ const Rooms = () => {
       title: 'Delete Room',
       content: `Are you sure you want to delete room ${roomNum}? This action cannot be undone.`,
       confirmText: 'Delete',
-      onConfirm: () => {
-        setRooms(rooms.filter(r => r.id !== roomId));
-        showSnackbar(`Room ${roomNum} deleted.`, "info");
+      onConfirm: async () => {
+        try {
+          await deleteRoom(roomId);
+          setRooms(rooms.filter(r => r.id !== roomId));
+          showSnackbar(`Room ${roomNum} deleted.`, "info");
+        } catch (error) {
+          showSnackbar(error.response?.data?.message || 'Failed to delete room', 'error');
+        }
       }
     });
   };

@@ -272,7 +272,7 @@ const Bookings = () => {
       }
     } catch (error) {
       console.error("Booking save error:", error);
-      showSnackbar("Failed to save booking", "error");
+      showSnackbar(error.response?.data?.message || "Failed to save booking", "error");
     }
   };
 

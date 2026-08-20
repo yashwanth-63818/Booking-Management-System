@@ -12,7 +12,7 @@ import {
   Visibility as ViewIcon, ExitToApp as CheckOutIcon, Event as ExtendIcon,
   Group as GroupIcon
 } from '@mui/icons-material';
-import { guestsData as initialGuestsData } from '../services/dummyData';
+import { getGuests, updateGuest, extendGuestStay, checkOutGuest } from '../services/api';
 import EmptyState from '../components/EmptyState';
 import { useUI } from '../context/UIContext';
 
@@ -39,7 +39,7 @@ const defaultGuest = {
 };
 
 const Guests = () => {
-  const [guests, setGuests] = useState(initialGuestsData);
+  const [guests, setGuests] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [filterStatus, setFilterStatus] = useState('All');
   const [viewMode, setViewMode] = useState('grid');
@@ -47,8 +47,18 @@ const Guests = () => {
   const { showSnackbar, showDialog } = useUI();
 
   useEffect(() => {
-    const timer = setTimeout(() => setIsLoading(false), 1000);
-    return () => clearTimeout(timer);
+    const fetchGuests = async () => {
+      try {
+        setIsLoading(true);
+        const data = await getGuests();
+        setGuests(data);
+      } catch (error) {
+        showSnackbar('Failed to load guests', 'error');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchGuests();
   }, []);
 
   // Dialogs state
@@ -100,23 +110,38 @@ const Guests = () => {
       title: 'Check Out Guest',
       content: `Are you sure you want to check out ${guest.name}?`,
       confirmText: 'Check Out',
-      onConfirm: () => {
-        setGuests(guests.map(g => g.id === guest.id ? { ...g, status: 'Checked-out' } : g));
-        showSnackbar(`${guest.name} checked out successfully`, "info");
+      onConfirm: async () => {
+        try {
+          await checkOutGuest(guest.id);
+          setGuests(guests.map(g => g.id === guest.id ? { ...g, status: 'Checked-out' } : g));
+          showSnackbar(`${guest.name} checked out successfully`, "info");
+        } catch (error) {
+           showSnackbar(error.response?.data?.message || 'Failed to check out guest', 'error');
+        }
       }
     });
   };
 
-  const handleSaveEdit = () => {
-    setGuests(guests.map(g => g.id === currentGuest.id ? currentGuest : g));
-    setOpenEdit(false);
-    showSnackbar("Guest details updated", "success");
+  const handleSaveEdit = async () => {
+    try {
+      await updateGuest(currentGuest.id, currentGuest);
+      setGuests(guests.map(g => g.id === currentGuest.id ? currentGuest : g));
+      setOpenEdit(false);
+      showSnackbar("Guest details updated", "success");
+    } catch (error) {
+      showSnackbar(error.response?.data?.message || 'Failed to update guest', 'error');
+    }
   };
 
-  const handleSaveExtend = () => {
-    setGuests(guests.map(g => g.id === currentGuest.id ? { ...g, checkOut: extendDate } : g));
-    setOpenExtend(false);
-    showSnackbar(`Stay extended to ${extendDate}`, "success");
+  const handleSaveExtend = async () => {
+    try {
+      await extendGuestStay(currentGuest.id, { checkOut: extendDate });
+      setGuests(guests.map(g => g.id === currentGuest.id ? { ...g, checkOut: extendDate } : g));
+      setOpenExtend(false);
+      showSnackbar(`Stay extended to ${extendDate}`, "success");
+    } catch (error) {
+      showSnackbar(error.response?.data?.message || 'Failed to extend stay', 'error');
+    }
   };
 
   const handleChange = (e) => {

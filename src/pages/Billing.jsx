@@ -242,10 +242,10 @@ const Billing = () => {
                   <TableRow sx={{ '& td': { borderBottom: '1px solid #f3f4f6', py: 1.5, px: 0 } }}>
                     <TableCell>
                       <Typography variant="body1" fontWeight="500" color="#111827">Accommodation</Typography>
-                      <Typography variant="body2" color="text.secondary">{bookingDetails.nights} nights @ \${roomCharges / bookingDetails.nights}/night</Typography>
+                      <Typography variant="body2" color="text.secondary">{bookingDetails.nights} nights @ ${roomCharges / bookingDetails.nights}/night</Typography>
                     </TableCell>
                     <TableCell align="right">
-                      <Typography variant="body1" fontWeight="600" color="#111827">\${roomCharges.toFixed(2)}</Typography>
+                      <Typography variant="body1" fontWeight="600" color="#111827">${roomCharges.toFixed(2)}</Typography>
                     </TableCell>
                   </TableRow>
                   <TableRow sx={{ '& td': { borderBottom: '1px solid #f3f4f6', py: 1.5, px: 0 } }}>
@@ -254,7 +254,7 @@ const Billing = () => {
                       <Typography variant="body2" color="text.secondary">Room Service, Spa treatments, Mini Bar</Typography>
                     </TableCell>
                     <TableCell align="right">
-                      <Typography variant="body1" fontWeight="600" color="#111827">\${extraCharges.toFixed(2)}</Typography>
+                      <Typography variant="body1" fontWeight="600" color="#111827">${extraCharges.toFixed(2)}</Typography>
                     </TableCell>
                   </TableRow>
                   <TableRow sx={{ '& td': { borderBottom: '1px solid #f3f4f6', py: 1.5, px: 0 } }}>
@@ -263,7 +263,7 @@ const Billing = () => {
                       <Typography variant="body2" color="#10b981">Special promotional offer applied</Typography>
                     </TableCell>
                     <TableCell align="right">
-                      <Typography variant="body1" fontWeight="600" color="#059669">-\${discount.toFixed(2)}</Typography>
+                      <Typography variant="body1" fontWeight="600" color="#059669">-${discount.toFixed(2)}</Typography>
                     </TableCell>
                   </TableRow>
                 </TableBody>
@@ -275,15 +275,15 @@ const Billing = () => {
               <Box sx={{ width: { xs: '100%', md: '50%' } }}>
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', py: 1.5 }}>
                   <Typography variant="body1" color="text.secondary">Subtotal</Typography>
-                  <Typography variant="body1" fontWeight="600" color="#111827">\${(subTotal - discount).toFixed(2)}</Typography>
+                  <Typography variant="body1" fontWeight="600" color="#111827">${(subTotal - discount).toFixed(2)}</Typography>
                 </Box>
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', py: 1.5, borderBottom: '1px solid #f3f4f6' }}>
                   <Typography variant="body1" color="text.secondary">Taxes & Fees (18%)</Typography>
-                  <Typography variant="body1" fontWeight="600" color="#111827">\${gstAmount.toFixed(2)}</Typography>
+                  <Typography variant="body1" fontWeight="600" color="#111827">${gstAmount.toFixed(2)}</Typography>
                 </Box>
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', py: 3 }}>
                   <Typography variant="h6" fontWeight="700" color="#111827">Total Due</Typography>
-                  <Typography variant="h5" fontWeight="800" sx={{ color: '#7A4E2D' }}>\${grandTotal.toFixed(2)}</Typography>
+                  <Typography variant="h5" fontWeight="800" sx={{ color: '#7A4E2D' }}>${grandTotal.toFixed(2)}</Typography>
                 </Box>
               </Box>
             </Box>

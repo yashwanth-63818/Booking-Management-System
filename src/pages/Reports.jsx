@@ -116,7 +116,7 @@ const CustomTooltip = ({ active, payload, label }) => {
         {payload.map((entry, index) => (
           <Typography key={index} variant="body2" sx={{ color: entry.color, fontWeight: 600, display: 'flex', justifyContent: 'space-between', gap: 3 }}>
             <span style={{ textTransform: 'capitalize' }}>{entry.name}:</span>
-            <span>{entry.name.toLowerCase().includes('revenue') ? `$\${entry.value.toLocaleString()}` : entry.value}</span>
+            <span>{entry.name.toLowerCase().includes('revenue') ? `$${entry.value.toLocaleString()}` : entry.value}</span>
           </Typography>
         ))}
       </Box>
@@ -154,10 +154,10 @@ const Reports = () => {
       })),
       roomUsageData: baseRoomUsageData.map(d => ({ ...d, value: Math.round(d.value * multiplier) })),
       KPI_CARDS: [
-        { title: 'Total Revenue', value: `$\${Math.round(234900 * multiplier).toLocaleString()}`, icon: <AttachMoneyIcon fontSize="large" />, color: '#1a237e', trend: 12.5 },
+        { title: 'Total Revenue', value: `$${Math.round(234900 * multiplier).toLocaleString()}`, icon: <AttachMoneyIcon fontSize="large" />, color: '#1a237e', trend: 12.5 },
         { title: 'Total Bookings', value: Math.round(842 * multiplier).toLocaleString(), icon: <EventAvailableIcon fontSize="large" />, color: '#d4af37', trend: 8.2 },
         { title: 'Total Guests', value: Math.round(1892 * multiplier).toLocaleString(), icon: <PeopleIcon fontSize="large" />, color: '#7c3aed', trend: 15.4 },
-        { title: 'Avg Occupancy', value: `\${Math.min(100, Math.round(82 * (multiplier === 0.14 ? 0.8 : 1)))}%`, icon: <HotelIcon fontSize="large" />, color: '#059669', trend: 4.1 },
+        { title: 'Avg Occupancy', value: `${Math.min(100, Math.round(82 * (multiplier === 0.14 ? 0.8 : 1)))}%`, icon: <HotelIcon fontSize="large" />, color: '#059669', trend: 4.1 },
       ]
     };
   }, [timeFilter]);
@@ -215,7 +215,7 @@ const Reports = () => {
                 <BarChart data={dailyRevenueData} margin={{ top: 10, right: 10, left: 10, bottom: 10 }}>
                   <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f3f4f6" />
                   <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: '#6b7280', fontSize: 12 }} dy={10} />
-                  <YAxis axisLine={false} tickLine={false} tick={{ fill: '#6b7280', fontSize: 12 }} tickFormatter={(value) => `$\${value/1000}k`} />
+                  <YAxis axisLine={false} tickLine={false} tick={{ fill: '#6b7280', fontSize: 12 }} tickFormatter={(value) => `$${value/1000}k`} />
                   <Tooltip content={<CustomTooltip />} cursor={{fill: '#f9fafb'}} />
                   <Bar dataKey="revenue" fill="#1a237e" radius={[6, 6, 0, 0]} maxBarSize={40} />
                 </BarChart>
@@ -239,7 +239,7 @@ const Reports = () => {
                   </defs>
                   <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f3f4f6" />
                   <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: '#6b7280', fontSize: 12 }} dy={10} />
-                  <YAxis axisLine={false} tickLine={false} tick={{ fill: '#6b7280', fontSize: 12 }} tickFormatter={(value) => `$\${value/1000}k`} />
+                  <YAxis axisLine={false} tickLine={false} tick={{ fill: '#6b7280', fontSize: 12 }} tickFormatter={(value) => `$${value/1000}k`} />
                   <Tooltip content={<CustomTooltip />} />
                   <Area type="monotone" dataKey="revenue" stroke="#1a237e" strokeWidth={3} fillOpacity={1} fill="url(#colorRevenue)" />
                 </AreaChart>
@@ -285,7 +285,7 @@ const Reports = () => {
                     stroke="none"
                   >
                     {roomUsageData.map((entry, index) => (
-                      <Cell key={`cell-\${index}`} fill={COLORS[index % COLORS.length]} />
+                      <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                     ))}
                   </Pie>
                   <Tooltip content={<CustomTooltip />} />

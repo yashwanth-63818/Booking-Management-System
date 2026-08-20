@@ -10,7 +10,7 @@ const LoginContainer = styled(Box)(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-  backgroundImage: 'url("https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80")',
+  backgroundImage: 'url("/background.jpg")',
   backgroundSize: 'cover',
   backgroundPosition: 'center',
   position: 'relative',

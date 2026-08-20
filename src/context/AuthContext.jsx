@@ -49,15 +49,7 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
     try {
-      // --- TEMPORARY BYPASS FOR UI TESTING WHILE MYSQL INSTALLS ---
-      if (email === 'admin@kachinn.com' && password === 'admin123') {
-        const userData = { id: 1, name: 'Yash (Test Admin)', email: 'admin@kachinn.com', role: 'admin' };
-        localStorage.setItem('token', 'fake-jwt-token-for-ui-testing');
-        localStorage.setItem('user', JSON.stringify(userData));
-        setUser(userData);
-        return { success: true };
-      }
-      // ------------------------------------------------------------
+
 
       const { data } = await api.post('/auth/login', { email, password });
       

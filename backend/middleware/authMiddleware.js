@@ -11,11 +11,7 @@ const protect = (req, res, next) => {
       // Get token from header
       token = req.headers.authorization.split(' ')[1];
 
-      // Bypass check for the frontend UI mock token
-      if (token === 'fake-jwt-token-for-ui-testing') {
-        req.user = { id: 1, role: 'admin' };
-        return next();
-      }
+
 
       // Verify real token
       const decoded = jwt.verify(token, process.env.JWT_SECRET);

@@ -207,6 +207,36 @@ const createBooking = async (req, res, next) => {
     // Generate Booking ID (e.g. BKG-1234)
     const newId = `BKG-${Math.floor(1000 + Math.random() * 9000)}`;
 
+    const checkInDate = new Date(booking.checkIn || booking.check_in);
+    const checkOutDate = new Date(booking.checkOut || booking.check_out);
+    const roomNumber = booking.room || booking.room_number;
+    
+    if (checkOutDate <= checkInDate) {
+      return res.status(400).json({ message: 'Check-out date must be after check-in date' });
+    }
+
+    // Check for overlap
+    const overlapQuery = `
+      SELECT id FROM bookings 
+      WHERE room_number = ? 
+      AND status IN ('Confirmed', 'Checked In')
+      AND (
+        (check_in <= ? AND check_out > ?) OR
+        (check_in < ? AND check_out >= ?) OR
+        (check_in >= ? AND check_out <= ?)
+      )
+    `;
+    const [overlapRows] = await pool.query(overlapQuery, [
+      roomNumber, 
+      checkOutDate, checkInDate,
+      checkOutDate, checkInDate,
+      checkInDate, checkOutDate
+    ]);
+
+    if (overlapRows.length > 0) {
+      return res.status(400).json({ message: 'Room is already booked for these dates' });
+    }
+
     const query = `
       INSERT INTO bookings (
         id, customer_name, phone, email, address, id_proof_type, id_number,
@@ -247,6 +277,36 @@ const updateBooking = async (req, res, next) => {
   try {
     const { id } = req.params;
     const booking = req.body;
+    const checkInDate = new Date(booking.checkIn || booking.check_in);
+    const checkOutDate = new Date(booking.checkOut || booking.check_out);
+    const roomNumber = booking.room || booking.room_number;
+    
+    if (checkOutDate <= checkInDate) {
+      return res.status(400).json({ message: 'Check-out date must be after check-in date' });
+    }
+
+    // Check for overlap, excluding this booking
+    const overlapQuery = `
+      SELECT id FROM bookings 
+      WHERE room_number = ? 
+      AND id != ?
+      AND status IN ('Confirmed', 'Checked In')
+      AND (
+        (check_in <= ? AND check_out > ?) OR
+        (check_in < ? AND check_out >= ?) OR
+        (check_in >= ? AND check_out <= ?)
+      )
+    `;
+    const [overlapRows] = await pool.query(overlapQuery, [
+      roomNumber, id,
+      checkOutDate, checkInDate,
+      checkOutDate, checkInDate,
+      checkInDate, checkOutDate
+    ]);
+
+    if (overlapRows.length > 0) {
+      return res.status(400).json({ message: 'Room is already booked for these dates' });
+    }
 
     const query = `
       UPDATE bookings SET

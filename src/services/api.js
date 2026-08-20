@@ -106,4 +106,52 @@ export const deleteBooking = async (id) => {
   return response.data;
 };
 
+// --- Auth API ---
+export const login = async (credentials) => {
+  const response = await api.post('/auth/login', credentials);
+  return response.data;
+};
+
+// --- Rooms API ---
+export const getRooms = async () => {
+  const response = await api.get('/rooms');
+  return response.data;
+};
+
+export const createRoom = async (roomData) => {
+  const response = await api.post('/rooms', roomData);
+  return response.data;
+};
+
+export const updateRoom = async (id, roomData) => {
+  const response = await api.put(`/rooms/${id}`, roomData);
+  return response.data;
+};
+
+export const deleteRoom = async (id) => {
+  const response = await api.delete(`/rooms/${id}`);
+  return response.data;
+};
+
+// --- Guests API ---
+export const getGuests = async () => {
+  const response = await api.get('/guests');
+  return response.data;
+};
+
+export const updateGuest = async (id, guestData) => {
+  const response = await api.put(`/guests/${id}`, guestData);
+  return response.data;
+};
+
+export const extendGuestStay = async (id, data) => {
+  const response = await api.put(`/guests/${id}/extend`, data);
+  return response.data;
+};
+
+export const checkOutGuest = async (id) => {
+  const response = await api.put(`/guests/${id}/checkout`);
+  return response.data;
+};
+
 export default api;

@@ -9,7 +9,8 @@ const invoiceRoutes = require('./routes/invoiceRoutes');
 const dashboardRoutes = require('./routes/dashboardRoutes');
 const notificationRoutes = require('./routes/notificationRoutes');
 const bookingRoutes = require('./routes/bookingRoutes');
-// const roomRoutes = require('./routes/roomRoutes');
+const roomRoutes = require('./routes/roomRoutes');
+const guestRoutes = require('./routes/guestRoutes');
 
 const app = express();
 
@@ -21,13 +22,16 @@ app.use(express.urlencoded({ extended: true }));
 // Serve uploaded files statically
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
+const { protect } = require('./middleware/authMiddleware');
+
 // Base Routes
-app.use('/api/auth', authRoutes);
-app.use('/api/invoices', invoiceRoutes);
-app.use('/api/dashboard', dashboardRoutes);
-app.use('/api/notifications', notificationRoutes);
-app.use('/api/bookings', bookingRoutes);
-// app.use('/api/rooms', roomRoutes);
+app.use('/api/auth', authRoutes); // Auth routes manage their own protection
+app.use('/api/invoices', protect, invoiceRoutes);
+app.use('/api/dashboard', protect, dashboardRoutes);
+app.use('/api/notifications', protect, notificationRoutes);
+app.use('/api/bookings', protect, bookingRoutes);
+app.use('/api/rooms', protect, roomRoutes);
+app.use('/api/guests', protect, guestRoutes);
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {
