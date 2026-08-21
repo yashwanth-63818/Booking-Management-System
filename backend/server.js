@@ -1,4 +1,12 @@
 require('dotenv').config();
+
+if (process.env.NODE_ENV === 'production') {
+  if (!process.env.JWT_SECRET || process.env.JWT_SECRET.length < 32 || process.env.JWT_SECRET === 'supersecretjwtkey123') {
+    console.error('FATAL ERROR: JWT_SECRET is not defined, too weak, or using the default value for production.');
+    process.exit(1);
+  }
+}
+
 const app = require('./app');
 const { runNotificationGeneration } = require('./controllers/notificationController');
 

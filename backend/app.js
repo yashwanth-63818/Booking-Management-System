@@ -1,5 +1,7 @@
 const express = require('express');
 const cors = require('cors');
+const helmet = require('helmet');
+const rateLimit = require('express-rate-limit');
 const path = require('path');
 const { errorHandler } = require('./middleware/errorMiddleware');
 
@@ -15,7 +17,20 @@ const guestRoutes = require('./routes/guestRoutes');
 const app = express();
 
 // Middleware
-app.use(cors());
+app.use(helmet());
+app.use(cors({
+  origin: process.env.FRONTEND_URL || 'http://localhost:5173',
+  credentials: true
+}));
+
+const apiLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // Limit each IP to 100 requests per `window`
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+app.use('/api', apiLimiter);
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -37,6 +52,15 @@ app.use('/api/guests', protect, guestRoutes);
 app.get('/api/health', (req, res) => {
   res.status(200).json({ status: 'success', message: 'Backend is running correctly.' });
 });
+
+// Serve frontend in production
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, '../dist')));
+
+  app.get('*', (req, res) => {
+    res.sendFile(path.resolve(__dirname, '../dist', 'index.html'));
+  });
+}
 
 // Global Error Handler Middleware
 app.use(errorHandler);
